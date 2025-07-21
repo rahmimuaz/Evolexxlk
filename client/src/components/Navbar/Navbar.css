@@ -1,0 +1,676 @@
+/* BASE NAVBAR STYLES */
+.navbar {
+  background-color: #ffffff;
+  padding: 0.8rem 1.2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  margin: 0 auto; /* Center content */
+  height: 2rem;
+}
+
+/* LEFT SECTION */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0; /* Prevent from shrinking */
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #030303;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* HAMBURGER (Only visible on mobile) */
+.hamburger-button {
+  display: none; /* Hidden by default */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+  color: #000;
+  flex-shrink: 0;
+  margin-right: 1.2rem; /* Space between hamburger and brand */
+}
+
+/* CENTER SECTION (Navigation Links) */
+.navbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1; /* Allow to grow and push other items */
+  /* Remove fixed margin-left, let flexbox handle it */
+}
+
+.navbar-links {
+  display: flex;
+  gap: 4rem;
+  position: relative;
+  flex-wrap: nowrap; /* Prevent wrapping on desktop */
+}
+
+.navbar-link {
+  position: relative;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 580;
+  font-size: 0.95rem;
+  padding-bottom: 5px;
+  transition: color 0.2s ease;
+  white-space: nowrap; /* Prevent links from breaking */
+}
+
+.navbar-link:hover {
+  color: #909090;
+}
+
+.navbar-link.active-link::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 95%; /* Adjust width for active link underline */
+  height: 1.5px;
+  background-color: #000000;
+  border-radius: 1px;
+}
+
+/* DIVIDER */
+.navbar-divider {
+  height: 24px;
+  width: 1px;
+  background-color: #e5e7eb;
+  margin: 0 1.5rem; /* Increased margin for better spacing */
+  flex-shrink: 0;
+}
+
+/* RIGHT SECTION (Cart, Search, Profile) */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Space between icons/elements */
+  position: relative; /* Keep for profile dropdown positioning */
+  flex-shrink: 0; /* Prevent shrinking too much */
+  flex-grow: 0; /* Initially don't grow */
+  /* This flex-grow will be overridden for search bar */
+}
+
+.cart-button {
+  position: relative;
+  color: #000000;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* Prevent from shrinking */
+}
+
+.cart-count {
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.5rem;
+  padding: 2px 5px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+
+/* SEARCH ICON BUTTON */
+.search-icon-button {
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  flex-shrink: 0; /* Essential to prevent shrinking when other items appear */
+}
+
+/* INTEGRATED SEARCH BAR (when open) */
+.search-bar-integrated {
+  flex-grow: 1; /* Allows it to take available space */
+  min-width: 400px;
+  position: relative; /* For positioning suggestions dropdown */
+  display: flex;
+  align-items: center;
+  transition: max-width 0.3s ease-out, margin-right 0.3s ease-out; /* Smooth transition */
+
+}
+
+/* Inner wrapper for input and close button */
+.search-input-wrapper-inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 12px;
+  color: #888;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  z-index: 2;
+}
+
+.search-input-navbar,
+.mobile-search-input {
+  padding-left: 38px !important;
+}
+
+/* Glassmorphism Input */
+.search-input-navbar {
+  width: 100%;
+  padding: 0.3rem 1rem;
+  padding-right: 2.5rem; /* space for the close button */
+  border: none;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  outline: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55) 60%, rgba(71, 61, 63, 0.35) 100%);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.10);
+  color: #222;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.search-input-navbar:focus {
+  box-shadow: 0 6px 24px 0 rgba(71, 61, 63, 0.35);
+  background: linear-gradient(135deg, rgba(255,255,255,0.85) 60%,rgba(71, 61, 63, 0.35)100%);
+}
+
+/* Close Button Inside Input */
+.search-bar-close {
+  position: absolute;
+  right: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.5);
+  border: none;
+  border-radius:10px;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 1.5rem;
+  color: #696969;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+
+.search-bar-close:hover {
+  background: rgba(255,255,255,0.8);
+  color: #000000;
+}
+
+/* Suggestions Dropdown */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 5px); /* Position below the input */
+  left: 0;
+  width: 100%; /* Match width of the input */
+  background: linear-gradient(135deg, rgba(113, 112, 112, 0.85) 60%, rgba(253, 253, 253, 0.55) 100%);
+  backdrop-filter: blur(8px);
+  border-radius: 0.7rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  z-index: 3100;
+  padding: 0.5rem 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+
+  transition: background 0.18s;
+}
+
+.search-suggestion-item:hover {
+  background: rgba(255, 255, 255, 0.427);
+}
+
+.search-suggestion-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 0.2rem;
+  background: #f3e6ef;
+  border: 1px solid #f3e6ef;
+}
+
+.search-suggestion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.search-suggestion-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.search-suggestion-price {
+  font-size: 0.98rem;
+  color: #c2c0c0;
+  font-weight: 500;
+}
+
+.search-suggestion-loading,
+.search-suggestion-error,
+.search-suggestion-empty {
+  padding: 1rem;
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+}
+
+
+/* PROFILE DROPDOWN */
+.profile-dropdown-wrapper {
+  position: relative;
+  flex-shrink: 0; /* Prevent profile icon from shrinking */
+}
+.profile-icon-button{
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  margin-top: 0.2rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 1.5rem;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
+background: linear-gradient(135deg, rgba(113, 112, 112, 0.85) 60%, rgba(253, 253, 253, 0.55) 100%);
+  backdrop-filter: blur(8px);
+  border-radius: 0.7rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18); 
+  color: #222;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  padding: 1.2rem 1.5rem;
+  min-width: 250px;
+  margin-top: 0.4rem;
+  text-align: left;
+}
+
+.show-dropdown {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.dropdown-text-1 {
+  color: #ffffff;
+  font-weight: 400;
+  margin-bottom: 1rem !important;
+
+}
+
+.user-name-dropdown-text{
+    font-weight: 600;
+
+}
+
+.dropdown-link, .logout-dropdown-button {
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: inherit; /* or use specific color like #222 if needed */
+  padding: 0;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.dropdown-link{
+  padding: 0.6rem 0.6rem;
+  font-size: 0.875rem;
+  width: 100%;
+    color: #fff;
+
+}
+
+
+.dropdown-link:hover, .logout-dropdown-button:hover {
+  border-radius: 0.5rem;
+  background: #686868;
+  color: #fff;
+}
+
+.dropdown-icon {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.logout-dropdown-button {
+  color: #fff;
+  padding: 0.6rem 0.6rem;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 13rem;
+}
+
+.logout-dropdown-button:hover {
+  border-radius: 0.5rem;
+  background-color: #dc2626;
+}
+
+/* ===========================
+   MOBILE RESPONSIVE STYLES
+   =========================== */
+@media (max-width: 1024px) {
+  .navbar-container {
+    padding: 0.8rem 1rem; /* Adjust padding for smaller desktops */
+  }
+
+  .navbar-center {
+    /* Let flex-grow handle it, remove fixed margin-left */
+    /* margin-left: 2rem; */
+    gap: 1.5rem;
+  }
+
+  .navbar-links {
+    gap: 2rem;
+  }
+
+  .search-bar-integrated {
+    max-width: 300px; /* Adjust max width for smaller desktop screens */
+    margin-right: 1rem; /* Keep some space */
+  }
+
+  .navbar-divider {
+    margin: 0 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.8rem 1rem; /* Consistent padding */
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: space-between;
+  }
+
+  .navbar-left {
+    order: 1; /* Order for mobile layout */
+    flex-grow: 1; /* Allow brand to take space */
+    justify-content: center; /* Center brand when hamburger is hidden */
+  }
+
+  /* Hamburger visible on mobile */
+  .hamburger-button {
+    display: flex;
+    order: 0; /* Place hamburger first */
+    margin-right: 1rem;
+  }
+
+  .navbar-center {
+    order: 3; /* Move links below other items on mobile */
+    flex-basis: 100%; /* Take full width */
+    max-height: 0; /* Collapsed by default */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    position: static; /* No absolute positioning on mobile for the menu */
+    background-color: #ffffff;
+    box-shadow: none; /* Remove box-shadow to prevent double shadow */
+    margin-top: 1rem;
+  }
+
+  .navbar-center.open {
+    max-height: 500px; /* Expand height to show links */
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 0; /* No gap between links vertically */
+    width: 100%;
+    padding: 0; /* No padding on container, let links have it */
+  }
+
+  .navbar-link {
+    padding: 0.75rem 1.5rem; /* Padding for individual links */
+    width: 100%;
+    text-align: left; /* Align links to the left */
+    border-top: 1px solid #e5e7eb; /* Separator between links */
+    font-size: 1rem;
+  }
+  .navbar-link:first-child {
+      border-top: none; /* No top border for the first link */
+  }
+
+  .navbar-divider {
+    display: none; /* Hide divider on mobile */
+  }
+
+  .navbar-right {
+    order: 2; /* Place right icons next to brand */
+    flex-grow: 0; /* Don't expand as much on mobile */
+    gap: 0.8rem; /* Smaller gap for mobile icons */
+  }
+
+  /* Search bar adjustments for mobile */
+  .search-bar-integrated {
+    max-width: none; /* Let it expand freely on mobile */
+    margin-right: 0.5rem;
+    flex-grow: 1; /* Allow it to take up max space */
+  }
+
+  .search-suggestions-dropdown {
+    width: calc(100% - 20px); /* Adjust width to fit screen with some margin */
+    left: 10px; /* Offset from left edge */
+    right: 10px; /* Offset from right edge */
+  }
+
+  .search-input-navbar {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    padding-right: 2.2rem;
+  }
+  .search-bar-close {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.3rem;
+  }
+
+  /* Profile dropdown on mobile: position directly relative to profile icon */
+  .dropdown-menu {
+    top: 2.5rem; /* Adjusted for better alignment below icon */
+    right: 0;
+    left: auto; /* Ensure it stays right-aligned */
+    transform-origin: top right; /* For better scaling animation */
+    min-width: 160px; /* Slightly smaller for mobile */
+    padding: 1rem;
+  }
+
+  /* Mobile search overlay styles */
+  .mobile-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    gap: 0.5rem;
+  }
+  .mobile-search-input {
+    flex: 1;
+    font-size: 1.1em;
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    background: #f5f5f5;
+    outline: none;
+  }
+  .mobile-search-cancel {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: #007aff;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 6px 10px;
+  }
+  .mobile-only { display: inline-flex !important; }
+  .desktop-only { display: none !important; }
+  .search-suggestions-dropdown.mobile {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    z-index: 2100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0 12px 12px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+}
+@media (min-width: 769px) {
+  .mobile-search-overlay { display: none !important; }
+  .mobile-only { display: none !important; }
+  .desktop-only { display: inline-flex !important; }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0rem 0.5rem;
+  }
+
+  .hamburger-button {
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .navbar-right {
+    gap: 0.6rem;
+  }
+
+  .cart-button .fa-shopping-cart,
+  .search-icon-button .fa-search,
+  .profile-icon-button .fa-user-circle {
+    font-size: 1rem; /* Smaller icons on very small screens */
+  }
+
+  .search-input-navbar {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    padding-right: 1.8rem;
+  }
+  .search-bar-close {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1rem;
+    right: 0.5rem;
+  }
+
+  .search-suggestions-dropdown {
+    width: calc(100% - 10px); /* Even tighter on very small screens */
+    left: 5px;
+    right: 5px;
+    border-radius: 1rem; /* Smaller radius */
+  }
+
+  .search-suggestion-item {
+    padding: 0.5rem 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .search-suggestion-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .search-suggestion-name {
+    font-size: 0.9rem;
+  }
+
+  .search-suggestion-price {
+    font-size: 0.8rem;
+  }
+
+  .dropdown-menu {
+    right: 5px;
+    min-width: 140px;
+    padding: 0.8rem;
+  }
+
+  .dropdown-link, .logout-dropdown-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+
+
+/* Search bar animation using scaleX for Apple-style smoothness */
+.search-bar-integrated {
+  transform: scaleX(0.85);
+  transform-origin: right center;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.search-bar-integrated.visible {
+  transform: scaleX(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navbar-center {
+  transition: transform 0.35s ease;
+}
+
+.navbar-center.shifted-left {
+  transform: translateX(-40px);
+}

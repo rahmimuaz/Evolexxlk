@@ -1,0 +1,413 @@
+/* === Page Container === */
+.checkout-page-container {
+  display: flex;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+}
+/* === Title Styling === */
+.checkout-title {
+  margin-top: 20px;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 60px;
+  text-align: center;
+  color: #333;
+}
+.checkout-max-width-wrapper {
+  width: 100%;
+
+}
+
+/* === Main Grid Layout === */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 120px;
+  padding: 10px 40px;
+}
+
+/* === Card Styling === */
+.checkout-card {
+  background-color: #f9f9f9;
+  padding: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* === Section Headings === */
+.section-heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+
+}
+
+/* === Form Layout === */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* === Payment Method Section === */
+.payment-method-section {
+  margin-top: 30px;
+}
+
+.payment-options-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.radio-option {
+  flex: 1;
+  min-width: 130px;
+  position: relative;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-label {
+  display: block;
+  padding: 12px 18px;
+  text-align: center;
+  background-color: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  border: 2px solid transparent;
+  font-weight: 500;
+}
+
+.radio-input:checked + .radio-label {
+  background-color: #000000;
+  color: white;
+}
+
+/* === Submit Button === */
+.place-order-button-container {
+  margin-top: 30px;
+}
+
+.place-order-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.place-order-button:hover {
+  background-color: #3f3f3f;
+}
+
+
+/* === Summary Items === */
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+}
+
+.summary-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.summary-item-image-container {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.summary-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.summary-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-item-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.summary-item-quantity {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.summary-item-price {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* === Totals === */
+.summary-totals {
+  border-top: 1px solid #ddd;
+
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.total-line {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* === Placeholder if Image Fails === */
+.summary-item-image-placeholder {
+  width: 60px;
+  height: 60px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+/* Container that includes the list of summary items */
+.summary-items-list {
+  max-height:275px; /* Adjust height as needed */
+  overflow-y: auto;
+  margin-bottom: 16px; /* Space before totals */
+  padding-right: 8px; /* Optional: for scrollbar space */
+  scroll-behavior: smooth;
+}
+
+/* Optional: Style the scrollbar */
+.summary-items-list::-webkit-scrollbar {
+  width: 6px;
+}
+.summary-items-list::-webkit-scrollbar-thumb {
+  display: none;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+.summary-items-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Keep summary-totals fixed at the bottom of the card */
+.summary-totals {
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.spinner-button {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  border-top: 3px solid #555;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+/* === Responsive Layout for Checkout Page === */
+
+/* Tablets (<=1024px) */
+@media (max-width: 1024px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    padding: 10px 20px;
+  }
+
+  .checkout-title {
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+
+  .checkout-card {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-option {
+    min-width: 120px;
+  }
+}
+
+/* Small Tablets & Large Mobiles (<=768px) */
+@media (max-width: 768px) {
+  .checkout-title {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+
+  .checkout-grid {
+    padding: 10px 15px;
+    gap: 25px;
+  }
+
+  .checkout-card {
+    padding: 20px;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  .form-input {
+    font-size: 0.9rem;
+    padding: 9px;
+  }
+
+  .place-order-button {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .summary-item-image-container {
+    width: 50px;
+    height: 50px;
+  }
+
+  .summary-item-image-placeholder {
+    width: 50px;
+    height: 50px;
+  }
+
+  .summary-item-name {
+    font-size: 0.9rem;
+  }
+
+  .summary-item-quantity {
+    font-size: 0.8rem;
+  }
+
+  .summary-item-price {
+    font-size: 0.95rem;
+  }
+
+  .summary-items-list {
+    max-height: 250px;
+  }
+
+  .total-line {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Phones (<=480px) */
+@media (max-width: 480px) {
+  .checkout-title {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+
+  .checkout-grid {
+    padding: 10px;
+  }
+
+  .checkout-card {
+    padding: 15px;
+  }
+
+  .section-heading {
+    font-size: 1.1rem;
+  }
+
+  .form-grid {
+    gap: 15px;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .form-input {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .payment-options-group {
+    gap: 10px;
+  }
+
+  .radio-label {
+    padding: 7px;
+    font-size: 0.85rem;
+  }
+
+  .place-order-button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .summary-items-list {
+    max-height: 220px;
+    padding-right: 4px;
+  }
+
+  .summary-item-image-container,
+  .summary-item-image-placeholder {
+    width: 45px;
+    height: 45px;
+  }
+
+  .summary-item-name {
+    font-size: 0.85rem;
+  }
+
+  .summary-item-price {
+    font-size: 0.9rem;
+  }
+
+  .summary-line {
+    font-size: 0.9rem;
+  }
+
+  .total-line {
+    font-size: 0.95rem;
+  }
+}

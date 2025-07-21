@@ -1,0 +1,94 @@
+.register-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.register-card {
+  background: none;
+  box-shadow: none;
+  border-radius: 2rem;
+  padding: 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-title {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-input {
+  background: rgba(255,255,255,0.7);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  outline: none;
+  color: #222;
+  width: 100%;
+  transition: border 0.2s;
+}
+
+
+.register-button {
+  background-color: #141414;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.7rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.register-button:hover {
+  background-color: #414141;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+}
+
+.login-text {
+  margin-top: 1.2rem;
+  text-align: center;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.login-link {
+  color: #141414;
+  font-weight: 600;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-left: 0.3rem;
+  transition: color 0.2s;
+}
+
+.login-link:hover {
+  color: #414141;
+}

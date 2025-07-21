@@ -1,0 +1,368 @@
+.navbar-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background-color: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.navbar-inner-container {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .navbar-inner-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-inner-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.navbar-logo-wrapper {
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  color: #222;
+  font-size: 1.875rem;
+  font-weight: 800;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  text-decoration: none;
+}
+
+.navbar-links-desktop {
+  display: none;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navbar-links-desktop {
+    display: flex;
+  }
+}
+
+.navbar-link {
+  color: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+  text-decoration: none;
+}
+
+
+
+.navbar-link.active {
+  background-color: #cbcbcb;
+  font-weight: 600;
+}
+
+/* Logout Button Styles */
+.navbar-logout-button {
+  background-color: #dc2626;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-logout-button:hover {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+}
+
+.navbar-logout-button:active {
+  transform: translateY(0);
+}
+
+/* Register Admin Button Styles */
+.navbar-register-button {
+  background-color: #059669;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-register-button:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+}
+
+.navbar-register-button:active {
+  transform: translateY(0);
+}
+
+.navbar-mobile-menu-button-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navbar-mobile-menu-button-wrapper {
+    display: none;
+  }
+}
+
+.navbar-mobile-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: #fff;
+  background-color: transparent;
+  transition-property: background-color;
+  transition-duration: 200ms;
+}
+
+.navbar-mobile-menu-button:hover {
+  background-color: #1d4ed8;
+}
+
+.navbar-mobile-menu-button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 1);
+}
+
+.navbar-mobile-menu-button svg {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.navbar-mobile-menu {
+  display: none;
+}
+
+.navbar-mobile-menu.open {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .navbar-mobile-menu {
+    display: none;
+  }
+}
+
+.navbar-mobile-menu-links {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .navbar-mobile-menu-links {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+.navbar-mobile-link {
+  display: block;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+}
+
+.navbar-mobile-link:hover {
+  background-color: #1d4ed8;
+}
+
+.navbar-mobile-link.active {
+  background-color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* Mobile Logout Button Styles */
+.navbar-mobile-logout-button {
+  background-color: #dc2626;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.navbar-mobile-logout-button:hover {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+}
+
+.navbar-mobile-logout-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile Register Admin Button Styles */
+.navbar-mobile-register-button {
+  background-color: #059669;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.navbar-mobile-register-button:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+}
+
+.navbar-mobile-register-button:active {
+  transform: translateY(0);
+}
+
+/* Notification styles */
+.navbar-notification-wrapper {
+  position: relative;
+  margin-right: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-notification-btn {
+  background: none;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  min-width: 18px;
+  text-align: center;
+  z-index: 2;
+}
+
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  background: #fff;
+  color: #222;
+  min-width: 260px;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border-radius: 0.5rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  z-index: 100;
+}
+
+.notification-dropdown h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.notification-empty {
+  color: #64748b;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.notification-item {
+  padding: 0.5rem 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.97rem;
+  color: #222;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-low {
+  color: #eab308;
+}
+.notification-out {
+  color: #ef4444;
+}
+.notification-order {
+  color: #3b82f6;
+}

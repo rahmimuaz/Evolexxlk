@@ -1,0 +1,201 @@
+/* Products.css */
+
+/* --- Loading and Error States --- */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  height: 3rem;
+  width: 3rem;
+  border-bottom: 2px solid #6366f1;
+  border-top: 2px solid #e0e7ef;
+  border-left: 2px solid #e0e7ef;
+  border-right: 2px solid #e0e7ef;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg);}
+  to { transform: rotate(360deg);}
+}
+
+.error-message {
+  color: #dc2626;
+  text-align: center;
+  padding: 1rem;
+  background: #fef2f2;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Main Products Container --- */
+.products-container {
+  max-width: 90rem;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  background: #f8fafc;
+  border-radius: 1.25rem;
+  box-shadow: 0 6px 32px 0 rgba(30,41,59,0.08), 0 1.5px 6px 0 rgba(30,41,59,0.06);
+}
+
+.products-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+.products-description {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #64748b;
+}
+
+/* --- Table Structure --- */
+.table-outer-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+}
+
+.table-container {
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(30,41,59,0.08);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 900px;
+}
+
+.products-table thead {
+  background: #f1f5f9;
+}
+
+.products-table th {
+  padding: 1.1rem 1rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #334155;
+  border-bottom: 2px solid #e2e8f0;
+  letter-spacing: 0.5px;
+}
+
+.products-table th:last-child {
+  text-align: right;
+}
+
+.products-table tbody {
+  background: #fff;
+}
+
+.products-table tr {
+  transition: background 0.15s;
+}
+
+.products-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.products-table td {
+  padding: 1rem 1rem;
+  font-size: 0.98rem;
+  color: #475569;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.products-table td:last-child {
+  text-align: right;
+  min-width: 120px;
+}
+
+/* --- Stock Badges --- */
+.products-table .stock-badge {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.products-table .stock-badge.low {
+  background: #fef9c3;
+  color: #b45309;
+}
+
+.products-table .stock-badge.out {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.products-table .stock-badge.in {
+  background: #d1fae5;
+  color: #047857;
+}
+
+/* --- Action Buttons --- */
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3em 0.7em;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 0.4em;
+  transition: background 0.15s, color 0.15s;
+  margin-right: 0.5em;
+}
+
+.edit-button {
+  color: #2563eb;
+}
+
+.edit-button:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.delete-button {
+  color: #dc2626;
+}
+
+.delete-button:hover {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .products-table {
+    min-width: 700px;
+  }
+  .products-container {
+    padding: 1rem 0.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-table {
+    min-width: 500px;
+  }
+  .products-title {
+    font-size: 1.3rem;
+  }
+}

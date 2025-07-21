@@ -1,0 +1,151 @@
+/* Footer.css */
+
+.footer {
+  color: #333;
+  padding: 30px 60px;
+  margin-left: 200px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+.section-divider,
+.footer-divider {
+  border: none;
+  border-top: 1.5px solid #ddd;
+  margin: 0;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.footer-brand {
+  flex: 1 1 250px;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.footer-brand p {
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.95rem;
+  max-width: 300px;
+}
+
+.footer-links {
+  flex: 1 1 200px;
+}
+
+.footer-links h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #111;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-link-btn {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 6px 0;
+  text-align: left;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+.footer-link-btn:hover {
+  color: #444;
+
+}
+
+.footer-bottom {
+  background-color: #f1f1f1;
+  padding: 15px 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tablet (landscape & portrait) */
+@media (max-width: 1024px) {
+  .footer {
+    margin-left: 0;
+    padding: 30px 40px;
+  }
+
+  .footer-top {
+    gap: 30px;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .footer {
+    margin-left: 0;
+    padding: 30px 20px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .footer-brand,
+  .footer-links {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .footer-links ul {
+    padding-left: 0;
+  }
+
+  .footer-link-btn {
+    width: auto;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .footer-links h4 {
+    font-size: 1rem;
+  }
+
+  .footer-link-btn {
+    font-size: 0.9rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom {
+    padding: 10px;
+  }
+}

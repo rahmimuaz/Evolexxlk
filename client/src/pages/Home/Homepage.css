@@ -1,0 +1,619 @@
+/* ============ GENERAL STYLES ============ */
+.home {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
+}
+
+.loader {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+
+/* ============ HERO BANNER ============ */
+.banner {
+  position: relative;
+  width: 100%;
+  max-height: 78vh;
+  height: 78vh;
+  overflow: hidden;
+}
+
+.banner-slider {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s ease-in-out;
+}
+
+.banner-image {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============ FEATURES ============ */
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
+  gap: 5rem;
+  flex-wrap: wrap;
+}
+
+.feature {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-right: 2px solid #d1d5db;
+}
+
+.feature:last-child {
+  border-right: none;
+}
+
+.feature svg {
+  width: 50px;
+  height: 50px;
+  color: #000000;
+  flex-shrink: 0;
+}
+
+.feature-text {
+  text-align: left;
+}
+
+.feature-text h3 {
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.feature-text p {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* ============ UPDATED CATEGORY SECTION ============ */
+.category-section {
+  padding: 0px 20px;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.category-grid-custom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 300px;
+  gap: 10px;
+  justify-items: stretch;
+}
+
+.category-card {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 12px;
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+}
+
+.category-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Card Types */
+.category-card.tall {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.category-card.square {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.category-card.wide {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+/* Overlay Text */
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  z-index: 2;
+  padding: 15px;
+}
+
+.overlay-text h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.overlay-text p {
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+
+.overlay-text span {
+  font-size: 0.85rem;
+  color: orange;
+  font-weight: bold;
+}
+
+/* Position variations */
+.overlay-text.right {
+  top: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.overlay-text.bottom {
+  bottom: 15px;
+  left: 15px;
+}
+
+.overlay-text.left {
+  top: 20px;
+  left: 20px;
+}
+
+.overlay-text.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* ============ PRODUCT SECTION ============ */
+.product-section {
+  margin-top: 30px;
+  padding: 0rem 2rem;
+  text-align: center;
+  background-color: #ffffff;
+  margin-bottom: 100px;
+}
+
+.product-section hr {
+  width: 99%;
+  margin: 40px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Heading and Toggle Icon Container */
+.heading-with-icon {
+  display: flex;
+  justify-content: space-between; /* Spreads out items */
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 3rem;
+  /* Centering the heading and pushing the icon to the right */
+  position: relative; /* For absolute positioning of the icon if needed */
+}
+
+.product-section h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 auto; /* Centers the heading */
+  position: relative;
+  display: block; /* Ensures it takes full width for margin auto to work */
+  text-align: center;
+  flex-grow: 1; /* Allows the heading to take available space */
+}
+
+/* Filter toggle icon styling */
+.filter-toggle-icon {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #000;
+  transition: color 0.3s ease;
+  user-select: none;
+  margin-left: auto; /* Pushes the icon to the far right */
+}
+
+.filter-toggle-icon:hover {
+  color: #e75480;
+}
+
+/* Container for product grid with hidden overflow */
+.product-grid-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 800px; /* Adjust as needed for your product grid height */
+}
+
+/* The product grid itself */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 3rem 2rem;
+
+  /* Animate position changes */
+  transform: translateX(0);
+  transition: transform 0.4s ease;
+}
+
+/* Slide left: current products slide out to left */
+.product-grid-container.slide-left .product-grid {
+  transform: translateX(-100%);
+}
+
+/* Slide right: current products slide out to right */
+.product-grid-container.slide-right .product-grid {
+  transform: translateX(100%);
+}
+
+.product-card {
+  background-color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  background-color: #f0f0f094;
+  border-radius: 8px;
+}
+
+.product-card h3 {
+  text-align: center;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  color: #111827;
+  font-weight: 500;
+}
+
+.product-card p {
+  text-align: center;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.product-card .price {
+  text-align: left;
+  font-size: 1rem;
+  color: #080808;
+  font-weight: 300;
+  margin-top: 20px;
+}
+.card-footer .koko-pay {
+  display: flex;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: #a9afb9;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-footer .koko-logo {
+  background-color: #fff;
+  width: 17%;
+  height: 16px;
+  margin-left: 20px;
+  border-radius: 0px;
+}
+
+.star-rating {
+  color: #f7c948; /* gold color */
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.koko-pay {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.koko-logo {
+  height: 16px;
+  margin-left: 5px;
+}
+
+/* Pagination dots container */
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+/* Each dot style */
+.dot {
+  width: 10px;
+  height: 10px;
+  border: 2px dotted #555;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-top: 100px;
+}
+
+/* Pulsing animation for active dot */
+.dot.active {
+  background-color: #111827;
+  border-color: #111827;
+  transform: scale(1.4);
+  animation: pulse 1.5s infinite;
+}
+
+/* Pulse keyframes */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(17, 24, 39, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(17, 24, 39, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(17, 24, 39, 0);
+  }
+}
+
+/* Dot hover effect */
+.dot:hover {
+  transform: scale(1.2);
+  border-color: #111;
+}
+
+/* FILTER & SORT BAR */
+.filter-sort-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(31, 38, 135, 0.15);
+  padding: 1.5rem 2rem;
+  transition: all 0.3s ease;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.filter-sort-bar:hover {
+  box-shadow: 0 12px 28px rgba(31, 38, 135, 0.18);
+}
+
+.filter-sort-bar .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.filter-sort-bar label {
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  margin-right: 0.3rem;
+}
+
+.filter-sort-bar select,
+.filter-sort-bar input[type="number"] {
+  border: 1px solid #d1d5db;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.95rem;
+  background: #fdfdfd;
+  color: #222;
+  outline: none;
+  min-width: 100px;
+  max-width: 140px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-sort-bar select:focus,
+.filter-sort-bar input[type="number"]:focus {
+  border-color: #5e5a5b;
+  box-shadow: 0 0 0 4px rgba(231, 84, 128, 0.15);
+}
+
+.price-range-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.price-input {
+  width: 90px;
+  text-align: center;
+  border-radius: 0.4rem;
+}
+
+.filter-sort-bar input[type="checkbox"] {
+  accent-color: #5e9f3b;
+  margin-right: 0.3rem;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+.brand-filter-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.brand-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.brand-checkbox-label {
+  font-weight: 500;
+  color: #444;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.brand-checkbox-label:hover {
+  color: #4e4c4c;
+}
+
+.stock-checkbox-label {
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-done-button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  background: linear-gradient(to right, #4b4a4a, #4b4a4a);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-done-button:hover {
+  background: linear-gradient(to right, #000000, #000000);
+
+}
+
+/* ============ MEDIA QUERIES ============ */
+@media (max-width: 768px) {
+  .category-grid-custom {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 140px;
+  }
+
+  .category-card.tall {
+    grid-row: span 2;
+  }
+
+  .category-card.wide {
+    grid-column: span 2;
+  }
+
+  .header,
+  .header-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .nav-buttons,
+  .nav-info {
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .search {
+    width: 100%;
+    max-width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0.3rem 1rem;
+  }
+
+  .search input {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.3rem;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .footer {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .footer-top,
+  .footer-links,
+  .footer-brand p,
+  .footer-links ul li,
+  .footer-bottom {
+    text-align: center;
+    min-width: 100%;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .filter-sort-bar {
+    flex-direction: column;
+    align-items: stretch; /* Stretch items to fill width */
+    padding: 1rem 0.75rem; /* Adjusted padding */
+    gap: 1rem; /* Adjusted gap */
+  }
+
+  .filter-sort-bar .filter-group {
+    width: 100%; /* Make each filter group take full width */
+    justify-content: space-between; /* Space out label and input/select */
+  }
+
+  .filter-sort-bar .brand-filter-group {
+    align-items: center; /* Center brand label */
+  }
+
+  .filter-sort-bar .brand-checkboxes {
+    justify-content: center; /* Center checkboxes on small screens */
+    width: 100%;
+  }
+
+  .filter-done-button {
+    margin-left: 0; /* Remove auto-margin on small screens */
+    width: 100%; /* Make button full width */
+    text-align: center;
+  }
+}
