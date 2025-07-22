@@ -78,8 +78,9 @@
 }
 
 .product-tagline {
-  color: #666;
-  font-size: 18px;
+  color: #888;
+  font-weight: 300;
+  font-size: 16px;
   margin-bottom: 10px;
 }
 
@@ -262,11 +263,11 @@
 }
 
 .info-block-title {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 18px;
   font-weight: 550;
   margin-bottom: 10px;
-  color: #444;
+  color: #333;
 }
 
 .info-list {
@@ -290,6 +291,7 @@
 }
 
 .font-semibold {
+  color:#555 ;
   font-weight: 400;
   font-size: 15px;
 }
@@ -302,11 +304,11 @@
 }
 
 .info-block-title1 {
-  margin-top: 5px;
+  margin-top: 15px;
   font-size: 18px;
   font-weight: 550;
   margin-bottom: 10px;
-  color: #444;
+  color: #333;
 }
 
 .no{
@@ -340,6 +342,7 @@
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .product-description-section h3 {
@@ -350,7 +353,7 @@
 }
 
 .product-description-section p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   margin-bottom: 10px;
 }
@@ -368,15 +371,17 @@
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: center;
 
 }
 .product-specifications-section ul {
   list-style-type: none;
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }   
 .product-specifications-section li {
-  font-size: 15px;
-  margin-bottom: 8px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  margin-left: 20px;
 }
 
 
@@ -486,14 +491,14 @@
     padding: 15px 25px;
     cursor: pointer;
     font-weight: bold;
-    color: #5e5e5e;
-    border-bottom: 2px solid transparent;
+    color: #333;
+    border-bottom: 1px solid transparent;
     transition: all 0.3s ease;
     font-size: 1.1em;
 }
 
 .tab-item:hover {
-    color: #9c9592;
+    color: #666;
 }
 
 .tab-item.active {
@@ -553,7 +558,7 @@
 .filter-button {
     background-color: #f0f0f0;
     border: 1px solid #ddd;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 8px 15px;
     cursor: pointer;
     font-size: 0.9em;
@@ -567,9 +572,8 @@
 }
 
 .filter-button.active {
-    background-color: #ff4700;
+    background-color: #000000;
     color: #fff;
-    border-color: #ff4700;
 }
 
 
@@ -722,11 +726,11 @@
 }
 
 .submit-review-btn {
-    background-color: #ff4700;
+    background-color: #000000;
     color: #fff;
     padding: 10px 20px;
     border: none;
-    border-radius: 25px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
@@ -734,7 +738,7 @@
 }
 
 .submit-review-btn:hover:not(:disabled) {
-    background-color: #e63e00;
+    background-color: #444;
 }
 
 .submit-review-btn:disabled {
@@ -747,9 +751,6 @@
     margin-top: 10px;
     font-size: 0.9em;
 }
-
-/* === Base Styles (Already Provided) === */
-/* All your existing styles remain unchanged */
 
 /* === Responsive Styles === */
 @media (max-width: 1200px) {
