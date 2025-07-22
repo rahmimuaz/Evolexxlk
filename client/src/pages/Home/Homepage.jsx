@@ -44,7 +44,7 @@ const Homepage = () => {
       setCurrentBannerIndex((prevIndex) =>
         prevIndex === bannerImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 4000);
+    }, 400000000);
 
     const transitionEndHandler = () => {
       if (!isTransitioning && currentBannerIndex === 0) {
@@ -190,19 +190,19 @@ const Homepage = () => {
       <section className="category-section">
         <div className="category-grid-custom">
           <Link to="/category/Mobile%20Phone" className="category-card tall">
-            <img src="/category-accessories.jpg" alt="Sound System" />
+            <img src="/BrandNewPhone.jpg" alt="Sound System" />
             <div className="overlay-text bottom"><p>Brand New Phone</p></div>
           </Link>
           <Link to="/category/Preowned%20Phones" className="category-card square">
-            <img src="/category-accessories.jpg" alt="Smart Watch" />
+            <img src="/PreOwnedPhone.jpg" alt="Smart Watch" />
             <div className="overlay-text bottom"><p>Pre Owned Phone</p></div>
           </Link>
           <Link to="/category/Laptops" className="category-card square">
-            <img src="/category-accessories.jpg" alt="Tablet" />
+            <img src="/Laptop.jpg" alt="Tablet" />
             <div className="overlay-text bottom"><p>Laptop</p></div>
           </Link>
           <Link to="/category/Mobile%20Accessories" className="category-card wide">
-            <img src="/category-accessories.jpg" alt="Game Controller" />
+            <img src="/MobileAccessories.jpg" alt="Game Controller" />
             <div className="overlay-text bottom"><p>Mobile Accessories</p></div>
           </Link>
         </div>
