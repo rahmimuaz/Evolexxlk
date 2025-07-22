@@ -148,18 +148,14 @@
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  backdrop-filter: blur(1px);
-  background-color: rgba(0, 0, 0, 0.3); /* Optional tint */
+  backdrop-filter: blur(px);
+  background-color: rgba(7, 7, 7, 0.102); /* Optional tint */
   z-index: 1;
 }
-
 .overlay-text {
   position: absolute;
-  top: 50%;
-  right: 0%;
-
   z-index: 2;
-  color: #fff;
+  color: #ffffff;
   text-align: center;
   background: none; /* No need for a separate background now */
 }
@@ -168,9 +164,9 @@
 
 
 .overlay-text p {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 
@@ -179,6 +175,8 @@
   bottom: 15px;
   left: 15px;
 }
+
+
 
 
 /* ============ PRODUCT SECTION ============ */
@@ -312,10 +310,9 @@
 }
 
 .card-footer .koko-logo {
-  background-color: #fff;
   width: 17%;
-  height: 16px;
-  margin-left: 20px;
+  height: 17px;
+  margin-left: 80px;
   border-radius: 0px;
 }
 
@@ -336,6 +333,7 @@
 .koko-logo {
   height: 16px;
   margin-left: 5px;
+  
 }
 
 /* Pagination dots container */
@@ -393,14 +391,18 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2.5rem;
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 24px rgba(31, 38, 135, 0.15);
   padding: 1.5rem 2rem;
-  transition: all 0.3s ease;
-  flex-grow: 1;
   max-width: 100%;
+  flex-grow: 1;
+  background: rgba(255, 255, 255, 0.1); /* Transparent white */
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(16px); /* Core glass effect */
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* frosted edge */
+  transition: all 0.3s ease;
 }
+
 
 .filter-sort-bar:hover {
   box-shadow: 0 12px 28px rgba(31, 38, 135, 0.18);
@@ -409,7 +411,7 @@
 .filter-sort-bar .filter-group {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1.8rem;
   flex-wrap: wrap;
 }
 
@@ -431,7 +433,7 @@
   color: #222;
   outline: none;
   min-width: 100px;
-  max-width: 140px;
+  max-width: 180px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -498,7 +500,7 @@
 .filter-done-button {
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
-  background: linear-gradient(to right, #4b4a4a, #4b4a4a);
+  background-color: #000;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
@@ -508,7 +510,7 @@
 }
 
 .filter-done-button:hover {
-  background: linear-gradient(to right, #000000, #000000);
+  background-color: #333;
 
 }
 

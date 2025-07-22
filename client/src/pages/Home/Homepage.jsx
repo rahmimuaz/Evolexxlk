@@ -207,7 +207,7 @@ const Homepage = () => {
           <Link to="/category/Mobile%20Accessories" className="category-card wide">
             <img src="/MobileAccessories.jpg" alt="Game Controller" />
             <div class="overlay-blur-bg"></div>
-            <div className="overlay-text bottom"><p>Mobile Accessories</p></div>
+            <div className="overlay-text bottom"><p> Accessories</p></div>
           </Link>
         </div>
       </section>
