@@ -1,6 +1,5 @@
 /* === Main Cart Container === */
 .cart {
-  margin-top: 40px;
   background-color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #000;
@@ -9,11 +8,12 @@
 
 /* === Title === */
 .cart-title {
-  font-size: 1.25rem;
+    margin-top: 20px;
+  font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 40px;
-  text-align: left;
-  padding-left: 1.2rem;
+  margin-bottom: 20px;
+  margin-left: 40px;
+  color: #333;
 }
 
 /* === Flex Layout for Cart Content === */

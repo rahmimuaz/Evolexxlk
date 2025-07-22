@@ -183,7 +183,7 @@ const Homepage = () => {
 
       <section className="features">
         <div className="feature"><FaShippingFast /><div className="feature-text"><h3>Fast & Free Shipping</h3><p>Every single order ships for free.</p></div></div>
-        <div className="feature"><FaRedoAlt /><div className="feature-text"><h3>30 Days Returns</h3><p>Product returns accepted within 30 days.</p></div></div>
+        <div className="feature"><FaRedoAlt /><div className="feature-text"><h3>7 Days Returns</h3><p>Product returns accepted within 30 days.</p></div></div>
         <div className="feature"><HiShieldCheck /><div className="feature-text"><h3>Top Quality Products</h3><p>We always provide high quality products.</p></div></div>
       </section>
 

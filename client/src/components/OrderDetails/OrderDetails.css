@@ -6,7 +6,7 @@
 
 
 .order-details-card {
-  background-color: #f9f9f9;
+  background-color: #f1f1f1;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
@@ -71,13 +71,13 @@
 
 .status-delivered { background-color: #28a745; }
 .status-shipped { background-color: #17a2b8; }
-.status-approved { background-color: #ffc107; color: #000; }
+.status-approved { background-color: #ff5107a4; color: #000; }
 .status-denied { background-color: #dc3545; }
 .status-default { background-color: #6c757d; }
 
 .payment-completed { background-color: #28a745; }
 .payment-failed { background-color: #dc3545; }
-.payment-pending { background-color: #ffc107; color: #000; }
+.payment-pending { background-color: #218838; color: #ffffff; }
 
 .info-section {
   display: flex;
