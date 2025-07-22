@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../Home/Homepage.css';
 import { FaBars } from 'react-icons/fa';
-
+import { FaShippingFast, FaRedoAlt, FaSlidersH } from 'react-icons/fa';
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PRODUCTS_PER_PAGE = 8;
 
@@ -91,7 +91,7 @@ const CategoryPage = () => {
     <div className="product-section">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ marginBottom: '60px' }}>{category}</h2>
-        <FaBars
+         <FaSlidersH
           onClick={() => setShowFilterBar(!showFilterBar)}
           style={{ cursor: 'pointer', fontSize: '1.5rem' }}
           title="Toggle Filters"
