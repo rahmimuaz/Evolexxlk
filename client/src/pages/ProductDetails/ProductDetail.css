@@ -30,18 +30,24 @@
 
 .main-image-container {
   width: 100%;
+  aspect-ratio: 1 / 1; /* Optional: Makes it a square */
   overflow: hidden;
+  
 }
 
 .main-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the container and keeps it uniform */
+  display: block;
+
 }
 
 .thumbnail-container {
   display: flex;
   gap: 15px;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .thumbnail-image {
