@@ -191,18 +191,22 @@ const Homepage = () => {
         <div className="category-grid-custom">
           <Link to="/category/Mobile%20Phone" className="category-card tall">
             <img src="/BrandNewPhone.jpg" alt="Sound System" />
+            <div class="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Brand New Phone</p></div>
           </Link>
           <Link to="/category/Preowned%20Phones" className="category-card square">
             <img src="/PreOwnedPhone.jpg" alt="Smart Watch" />
+            <div class="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Pre Owned Phone</p></div>
           </Link>
           <Link to="/category/Laptops" className="category-card square">
             <img src="/Laptop.jpg" alt="Tablet" />
+            <div class="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Laptop</p></div>
           </Link>
           <Link to="/category/Mobile%20Accessories" className="category-card wide">
             <img src="/MobileAccessories.jpg" alt="Game Controller" />
+            <div class="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Mobile Accessories</p></div>
           </Link>
         </div>
