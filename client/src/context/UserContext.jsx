@@ -63,9 +63,15 @@ export const UserProvider = ({ children }) => {
     return user?.token;
   };
 
+  // New function to update user state and localStorage (used for Google login)
+  const setUserState = (userData) => {
+    localStorage.setItem('userInfo', JSON.stringify(userData));
+    setUser(userData);
+  };
+
   return (
-    <UserContext.Provider value={{ user, loading, login, register, logout, getAuthToken }}>
-      {children}
+    <UserContext.Provider value={{ user, loading, login, register, logout, getAuthToken, setUser: setUserState }}>
+      {!loading && children}
     </UserContext.Provider>
   );
 };

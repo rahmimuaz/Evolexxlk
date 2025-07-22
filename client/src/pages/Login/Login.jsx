@@ -11,7 +11,7 @@ const Login = ({ asModal = false, onSuccess, onSwitchRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useUser();
+  const { login, setUser } = useUser();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -32,7 +32,9 @@ const Login = ({ asModal = false, onSuccess, onSwitchRegister }) => {
         token: credentialResponse.credential,
       });
 
-      localStorage.setItem('userInfo', JSON.stringify(res.data));
+      // Use context method to update user state & localStorage
+      setUser(res.data);
+
       if (onSuccess) onSuccess();
       else navigate('/');
     } catch (err) {
