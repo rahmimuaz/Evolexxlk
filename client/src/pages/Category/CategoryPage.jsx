@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../Home/Homepage.css';
-import { FaBars } from 'react-icons/fa';
-import { FaShippingFast, FaRedoAlt, FaSlidersH } from 'react-icons/fa';
+import { FaSlidersH } from 'react-icons/fa';
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PRODUCTS_PER_PAGE = 8;
 
