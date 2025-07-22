@@ -320,7 +320,7 @@ const ProductDetail = () => {
             </div>
 
             <div>
-              <h2 className="info-block-title">Payments</h2>
+              <h2 className="info-block-title">Payment Options</h2>
               <div className="info-list">
                 <div className="info-list-item">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
