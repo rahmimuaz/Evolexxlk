@@ -43,7 +43,7 @@ const Cart = () => {
 
   return (
     <div className="cart">
-      <h1 className="cart-title">Shopping Cart</h1>
+      <h1 className="cart-title">Cart</h1>
       <main className="cart-content max-width">
         <div className="cart-items-wrapper">
           <section className="cart-items">
