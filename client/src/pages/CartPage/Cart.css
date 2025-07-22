@@ -110,8 +110,9 @@
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-wrap: wrap;
+  background: #fff;
 }
 
 .qty-btn {
