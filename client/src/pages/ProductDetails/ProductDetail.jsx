@@ -209,7 +209,7 @@ const ProductDetail = () => {
 
           <div className="product-info-section">
             <h1 className="product-name-section">{product.name}</h1>
-            <p className="product-tagline">{product.description || 'We always provide high quality Products.'}</p>
+            <p className="product-tagline">{product.description}</p>
 
             <div className="product-ratings">
               {/* Display average rating stars */}
@@ -389,24 +389,12 @@ const ProductDetail = () => {
           >
             Specifications
           </div>
-          
-          <div
-            className={`tab-item ${activeTab === 'Store' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Store')}
-          >
-            Store
-          </div>
+
           <div
             className={`tab-item ${activeTab === 'Customer Reviews' ? 'active' : ''}`}
             onClick={() => setActiveTab('Customer Reviews')}
           >
             Customer Reviews ({reviews.length})
-          </div>
-          <div
-            className={`tab-item ${activeTab === 'More to love' ? 'active' : ''}`}
-            onClick={() => setActiveTab('More to love')}
-          >
-            More to love
           </div>
         </div>
 
