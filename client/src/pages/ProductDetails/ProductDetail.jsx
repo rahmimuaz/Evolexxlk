@@ -265,12 +265,19 @@ const ProductDetail = () => {
                       )}
                     </>
                   ) : (
-                    <span>No color options</span>
+                    <span className='no'>No color options</span>
                   )}
                 </div>
               </div>
 
               <div className="quantity-selector-section">
+                <div className="stock-status-section">
+              {product.stock > 0 ? (
+                <span className="in-stock" style={{ color: 'green', fontWeight: 'bold' }}>In Stock</span>
+              ) : (
+                <span className="out-of-stock" style={{ color: 'red', fontWeight: 'bold' }}>Out of Stock</span>
+              )}
+            </div>
                 <div className="quantity-controls">
                   <button onClick={() => handleQuantityChange('decrement')} className="quantity-button">-</button>
                   <input type="text" value={quantity.toString().padStart(2, '0')} readOnly className="quantity-input" />
@@ -278,15 +285,10 @@ const ProductDetail = () => {
                 </div>
                 <span className="stock-info">Only {product.stock} left in stock</span>
               </div>
+              
             </div>
 
-            <div className="stock-status-section" style={{ margin: '10px 0' }}>
-              {product.stock > 0 ? (
-                <span className="in-stock" style={{ color: 'green', fontWeight: 'bold' }}>In Stock</span>
-              ) : (
-                <span className="out-of-stock" style={{ color: 'red', fontWeight: 'bold' }}>Out of Stock</span>
-              )}
-            </div>
+            
 
             <div className="purchase-section">
               <div className="action-buttons-container">
@@ -302,39 +304,71 @@ const ProductDetail = () => {
 
           <div className="side-info-section">
             <div>
-              <h2 className="info-block-title">Delivery Options</h2>
+              <h2 className="info-block-title1">Delivery Options</h2>
               <div className="info-list">
                 <div className="info-list-item">
-                  <svg className="h-6 w-6 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-2 4l-3 3m0 0l3 3m-3-3h8" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                   </svg>
                   <div>
                     <p className="font-semibold">Standard</p>
-                    <p className="sub-text">Guaranteed by</p>
+                    <p className="sub-text">Within 7 business days</p>
                   </div>
-                </div>
-                <div className="info-list-item">
-                  <svg className="h-6 w-6 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 14l2 2m0 0l4-4m-4 4H7m-2 4h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  <p className="font-semibold">Cash on Delivery Available</p>
                 </div>
               </div>
             </div>
+
             <div>
-              <h2 className="info-block-title">Return & Warranty</h2>
+              <h2 className="info-block-title">Payments</h2>
               <div className="info-list">
                 <div className="info-list-item">
-                  <svg className="h-6 w-6 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                   </svg>
-                  <p className="font-semibold">7 days easy return</p>
+
+
+                  <div>
+                    <p className="font-semibold">Bank Transfer</p>
+                    <p className="sub-text">Secure and easy payment option</p>
+                  </div>
                 </div>
+
                 <div className="info-list-item">
-                  <svg className="h-6 w-6 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                   </svg>
-                  <p className="font-semibold">{product.warrantyPeriod || 'No Warranty'}</p>
+
+                  <div>
+                    <p className="font-semibold">Cash on Delivery</p>
+                    <p className="sub-text"> Pay at your doorstep</p>
+                  </div>
+                </div>
+
+                <div className="info-list-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                  </svg>
+
+                  <div>
+                    <p className="font-semibold">KOKO Payment</p>
+                    <p className="sub-text">Pay in 3 instalments with debit card </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h2 className="info-block-title">Returns & Warranty Policy</h2>
+              <div className="info-list">
+                <div className="info-list-item">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+                  <div>
+                    <p className="font-semibold">7-day return & warranty.</p>
+                    <p className="sub-text">Terms and conditions apply.</p>
+                  </div>
                 </div>
               </div>
             </div>
