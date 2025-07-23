@@ -20,11 +20,6 @@ const Homepage = () => {
   const productSectionRef = useRef(null);
   const headingRef = useRef(null);
 
-  const originalBannerImages = ['/banner1.jpg', '/banner2.jpg', '/banner3.jpg'];
-  const bannerImages = [...originalBannerImages, originalBannerImages[0]];
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-
   const sortOptions = [
     { value: 'price-asc', label: 'Price: Low to High' },
     { value: 'price-desc', label: 'Price: High to Low' },
@@ -35,35 +30,6 @@ const Homepage = () => {
   const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [brandFilter, setBrandFilter] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
-
-  useEffect(() => {
-    fetchProducts();
-
-    const bannerInterval = setInterval(() => {
-      setIsTransitioning(true);
-      setCurrentBannerIndex((prevIndex) =>
-        prevIndex === bannerImages.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 400000000);
-
-    const transitionEndHandler = () => {
-      if (!isTransitioning && currentBannerIndex === 0) {
-        setTimeout(() => setIsTransitioning(true), 50);
-      }
-    };
-
-    const bannerSlider = document.querySelector('.banner-slider');
-    if (bannerSlider) {
-      bannerSlider.addEventListener('transitionend', transitionEndHandler);
-    }
-
-    return () => {
-      clearInterval(bannerInterval);
-      if (bannerSlider) {
-        bannerSlider.removeEventListener('transitionend', transitionEndHandler);
-      }
-    };
-  }, [bannerImages.length, isTransitioning, currentBannerIndex]);
 
   useEffect(() => {
     fetchProducts();
@@ -167,18 +133,9 @@ const Homepage = () => {
 
   return (
     <div className="home">
+      {/* Static Banner Section */}
       <section className="banner">
-        <div
-          className="banner-slider"
-          style={{
-            transform: `translateX(-${currentBannerIndex * 100}%)`,
-            transition: isTransitioning ? 'transform 1s ease-in-out' : 'none',
-          }}
-        >
-          {bannerImages.map((image, index) => (
-            <img key={index} src={image} alt={`Hero Banner ${index + 1}`} className="banner-image" />
-          ))}
-        </div>
+        <img src="/banner1.jpg" alt="Banner" className="banner-image" />
       </section>
 
       <section className="features">
@@ -191,23 +148,23 @@ const Homepage = () => {
         <div className="category-grid-custom">
           <Link to="/category/Mobile%20Phone" className="category-card tall">
             <img src="/BrandNewPhone.jpg" alt="Sound System" />
-            <div class="overlay-blur-bg"></div>
+            <div className="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Brand New Phone</p></div>
           </Link>
           <Link to="/category/Preowned%20Phones" className="category-card square">
             <img src="/PreOwnedPhone.jpg" alt="Smart Watch" />
-            <div class="overlay-blur-bg"></div>
+            <div className="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Pre Owned Phone</p></div>
           </Link>
           <Link to="/category/Laptops" className="category-card square">
             <img src="/Laptop.jpg" alt="Tablet" />
-            <div class="overlay-blur-bg"></div>
+            <div className="overlay-blur-bg"></div>
             <div className="overlay-text bottom"><p>Laptop</p></div>
           </Link>
           <Link to="/category/Mobile%20Accessories" className="category-card wide">
             <img src="/MobileAccessories.jpg" alt="Game Controller" />
-            <div class="overlay-blur-bg"></div>
-            <div className="overlay-text bottom"><p> Accessories</p></div>
+            <div className="overlay-blur-bg"></div>
+            <div className="overlay-text bottom"><p>Accessories</p></div>
           </Link>
         </div>
       </section>
