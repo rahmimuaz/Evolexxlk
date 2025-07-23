@@ -3,15 +3,18 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
+  padding: 2rem 1rem;
 }
 
 .register-card {
-  background: none;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border-radius: 2rem;
-  padding: 0;
+  padding: 2rem;
   width: 100%;
   max-width: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .register-title {
@@ -36,8 +39,8 @@
 }
 
 .form-input {
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   border-radius: 0.5rem;
   padding: 0.7rem 1.2rem;
   font-size: 1rem;
@@ -47,20 +50,24 @@
   transition: border 0.2s;
 }
 
+.form-input:focus {
+  border-color: rgba(20, 20, 20, 0.8);
+}
 
+/* Button */
 .register-button {
   background-color: #141414;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
   padding: 0.7rem 2rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   margin-top: 1rem;
   cursor: pointer;
+  width: 100%;
   box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
   transition: background 0.2s, box-shadow 0.2s;
-  width: 100%;
 }
 
 .register-button:hover {
@@ -72,7 +79,7 @@
 .login-text {
   margin-top: 1.2rem;
   text-align: center;
-  color: #ffffff;
+  color: #444;
   font-size: 1rem;
 }
 
@@ -91,4 +98,63 @@
 
 .login-link:hover {
   color: #414141;
+}
+
+/* Tablets and small laptops */
+@media (max-width: 1024px) {
+  .register-card {
+    max-width: 90vw;
+    padding: 1.8rem;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+
+  .form-input,
+  .register-button,
+  .login-link {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .register-card {
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+  }
+
+  .register-title {
+    font-size: 1.6rem;
+  }
+
+  .form-input,
+  .register-button {
+    font-size: 0.95rem;
+  }
+
+  .login-text,
+  .login-link {
+    font-size: 0.95rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.2rem;
+    border-radius: 1rem;
+  }
+
+  .register-title {
+    font-size: 1.4rem;
+  }
+
+  .form-input,
+  .register-button,
+  .login-text,
+  .login-link {
+    font-size: 0.9rem;
+  }
 }

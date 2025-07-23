@@ -58,3 +58,87 @@
   background: rgba(255,255,255,0.8);
   color: #000000;
 } 
+
+/* Default is MacBook M2 (13-inch) — leave as is */
+
+/* Large Desktops & Monitors (1440px and above) */
+@media (min-width: 1440px) {
+  .modal-content {
+    min-width: 600px;
+    max-width: 800px;
+    padding: 3rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .modal-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Standard Laptops (1025px to 1439px) — slight scaling */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .modal-content {
+    min-width: 520px;
+    max-width: 90vw;
+    padding: 2.5rem 2rem;
+  }
+
+  .modal-title {
+    font-size: 2rem;
+  }
+}
+
+/* Tablets & iPads (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .modal-content {
+    min-width: 400px;
+    max-width: 90vw;
+    padding: 2rem 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile Devices (480px to 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .modal-content {
+    min-width: 360px;
+    max-width: 95vw;
+    padding: 1.8rem 1.2rem;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .modal-close {
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* Small Phones (Below 480px) */
+@media (max-width: 479px) {
+  .modal-content {
+    min-width: 320px;
+    max-width: 95vw;
+    padding: 1.5rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.4rem;
+  }
+
+  .modal-close {
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1.3rem;
+  }
+}
