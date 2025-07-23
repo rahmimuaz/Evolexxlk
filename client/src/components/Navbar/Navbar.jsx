@@ -36,10 +36,10 @@ const Navbar = () => {
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-  // 🔁 Ref for profile dropdown
   const dropdownRef = useRef(null);
+  const menuRef = useRef(null); // NEW
 
-  // 🔁 Close dropdown when clicking outside
+  // 🔁 Close profile dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -49,6 +49,19 @@ const Navbar = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // 🔁 Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutsideMenu = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutsideMenu);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutsideMenu);
+  }, [menuOpen]);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -63,7 +76,7 @@ const Navbar = () => {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!searchQuery) {
       setSearchResults([]);
       setSearchError(null);
@@ -71,7 +84,7 @@ const Navbar = () => {
     }
     setSearchLoading(true);
     const delayDebounce = setTimeout(() => {
-      fetch(`${API_BASE_URL}/api/products/search?query=` + encodeURIComponent(searchQuery))
+      fetch(`${API_BASE_URL}/api/products/search?query=${encodeURIComponent(searchQuery)}`)
         .then(res => res.json())
         .then(data => {
           setSearchResults(Array.isArray(data) ? data : []);
@@ -130,10 +143,17 @@ const Navbar = () => {
                   key={product._id}
                   onClick={() => handleSearchSelect(product._id)}
                 >
-                  <img src={product.images?.[0]} alt={product.name} className="search-suggestion-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo192.png'; }} />
+                  <img
+                    src={product.images?.[0]}
+                    alt={product.name}
+                    className="search-suggestion-img"
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/logo192.png'; }}
+                  />
                   <div className="search-suggestion-info">
                     <div className="search-suggestion-name">{product.name}</div>
-                    <div className="search-suggestion-price">Rs. {product.price?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
+                    <div className="search-suggestion-price">
+                      Rs. {product.price?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -151,7 +171,11 @@ const Navbar = () => {
           <Link to="/" className="navbar-brand">EVOLEXX</Link>
         </div>
 
-        <div className={`navbar-center ${menuOpen ? 'open' : ''} ${searchOpen ? 'shifted-left' : ''}`}>
+        {/* ✅ Mobile dropdown with ref */}
+        <div
+          ref={menuRef}
+          className={`navbar-center ${menuOpen ? 'open' : ''} ${searchOpen ? 'shifted-left' : ''}`}
+        >
           <div className="navbar-links">
             <Link to="/" className={`navbar-link ${location.pathname === '/' ? 'active-link' : ''}`} onClick={() => setMenuOpen(false)}>Home</Link>
             <Link to="/category/Mobile%20Phone" className={`navbar-link ${location.pathname === '/category/Mobile%20Phone' ? 'active-link' : ''}`} onClick={() => setMenuOpen(false)}>Brand New</Link>
@@ -206,10 +230,17 @@ const Navbar = () => {
                         key={product._id}
                         onClick={() => handleSearchSelect(product._id)}
                       >
-                        <img src={product.images?.[0]} alt={product.name} className="search-suggestion-img" onError={(e) => { e.target.onerror = null; e.target.src = '/logo192.png'; }} />
+                        <img
+                          src={product.images?.[0]}
+                          alt={product.name}
+                          className="search-suggestion-img"
+                          onError={(e) => { e.target.onerror = null; e.target.src = '/logo192.png'; }}
+                        />
                         <div className="search-suggestion-info">
                           <div className="search-suggestion-name">{product.name}</div>
-                          <div className="search-suggestion-price">Rs. {product.price?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
+                          <div className="search-suggestion-price">
+                            Rs. {product.price?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -234,7 +265,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* 🔁 Wrap dropdown with ref */}
+          {/* Profile dropdown */}
           <div className="profile-dropdown-wrapper" ref={dropdownRef}>
             <button className="profile-icon-button" onClick={toggleDropdown} aria-label="Toggle profile menu">
               <FaUserCircle size={22} />
@@ -270,6 +301,7 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Login/Register Modals */}
       <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <Login
           asModal
