@@ -429,7 +429,7 @@ const ProductDetail = () => {
 
         {activeTab === 'Customer Reviews' && (
           <div className="product-reviews-section">
-            <h2>Reviews | {averageRating} <span className="stars-in-reviews">
+            <h2>Reviews {averageRating} <span className="stars-in-reviews">
                 {[...Array(5)].map((_, i) => (
                     <span key={i} style={{ color: i < Math.floor(averageRating) ? '#FFD700' : '#ccc' }}>★</span>
                 ))}

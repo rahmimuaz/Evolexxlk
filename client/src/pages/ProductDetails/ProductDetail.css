@@ -837,7 +837,7 @@
   .product-specifications-section,
   .product-reviews-section,
   .product-tabs-navigation {
-    width: 100%;
+    width: 98%;
     padding: 5px;
   }
 
@@ -853,6 +853,28 @@
   .review-form textarea {
     font-size: 0.85em;
   }
+  .product-reviews-section h2 {
+    font-size: 0.875em;
+    margin-bottom: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.product-reviews-section h2 .stars-in-reviews span {
+    color: #FFD700;
+    font-size: 1em;
+}
+.tab-item {
+    padding: 15px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+}
+
 }
 
 @media (max-width: 480px) {
