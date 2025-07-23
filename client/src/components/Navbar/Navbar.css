@@ -596,6 +596,13 @@
     border-radius: 0 0 12px 12px;
     max-height: 50vh;
     overflow-y: auto;
+
+     /* Glassmorphism background */
+  background: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Frosted effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional soft shadow */
+  border-radius: 0px 0px 12px 12px; /* Optional: rounded corners */
   }
 }
 @media (min-width: 769px) {
@@ -659,10 +666,12 @@
 
   .search-suggestion-name {
     font-size: 0.9rem;
+    color: #000;
   }
 
   .search-suggestion-price {
     font-size: 0.8rem;
+    color: #000;
   }
 
   .dropdown-menu {
