@@ -5,6 +5,8 @@ import axios from 'axios';
 import { FaShippingFast, FaRedoAlt, FaSlidersH } from 'react-icons/fa';
 import { HiShieldCheck } from 'react-icons/hi';
 import Footer from '../../components/Footer/Footer';
+import bannerImage from '../Home/banner1.jpg';
+
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -135,7 +137,7 @@ const Homepage = () => {
     <div className="home">
       {/* Static Banner Section */}
       <section className="banner">
-        <img src="/banner1.jpg" className="banner-image" />
+       <img src={bannerImage} className="banner-image" alt="Homepage Banner" />
       </section>
 
       <section className="features">
