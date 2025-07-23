@@ -3,16 +3,18 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-
+  padding: 2rem 1rem;
 }
 
 .login-card {
-  background: none;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border-radius: 2rem;
-  padding: 0;
+  padding: 2rem;
   width: 100%;
   max-width: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .login-title {
@@ -28,10 +30,9 @@
   margin-bottom: 1.2rem;
 }
 
-
 .form-input {
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   border-radius: 1.5rem;
   padding: 0.7rem 1.2rem;
   font-size: 1rem;
@@ -45,19 +46,20 @@
   border: 1.5px solid #898989;
 }
 
+/* Button */
 .login-button {
   background-color: #141414;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
   padding: 0.7rem 2rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   cursor: pointer;
+  width: 100%;
   box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
   transition: background 0.2s, box-shadow 0.2s;
-  width: 100%;
 }
 
 .login-button:hover {
@@ -69,7 +71,7 @@
 .register-text {
   margin-top: 1.2rem;
   text-align: center;
-  color: #ffffff;
+  color: #444;
   font-size: 1rem;
 }
 
@@ -88,4 +90,64 @@
 
 .register-link:hover {
   color: #414141;
+}
+
+
+/* Tablets and small laptops */
+@media (max-width: 1024px) {
+  .login-card {
+    max-width: 90vw;
+    padding: 1.8rem;
+  }
+
+  .login-title {
+    font-size: 1.8rem;
+  }
+
+  .form-input,
+  .login-button,
+  .register-link {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+  }
+
+  .form-input,
+  .login-button {
+    font-size: 0.95rem;
+  }
+
+  .register-text,
+  .register-link {
+    font-size: 0.95rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.2rem;
+    border-radius: 1rem;
+  }
+
+  .login-title {
+    font-size: 1.4rem;
+  }
+
+  .form-input,
+  .login-button,
+  .register-text,
+  .register-link {
+    font-size: 0.9rem;
+  }
 }
