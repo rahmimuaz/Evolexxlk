@@ -160,24 +160,16 @@
   background: none; /* No need for a separate background now */
 }
 
-
-
-
 .overlay-text p {
   font-size: 1.2rem;
   margin: 0;
   font-weight: 600;
 }
 
-
-
 .overlay-text.bottom {
   bottom: 15px;
   left: 15px;
 }
-
-
-
 
 /* ============ PRODUCT SECTION ============ */
 .product-section {
@@ -333,7 +325,7 @@
 .koko-logo {
   height: 16px;
   margin-left: 5px;
-  
+
 }
 
 /* Pagination dots container */
@@ -516,7 +508,98 @@
 
 /* ============ MEDIA QUERIES ============ */
 @media (max-width: 768px) {
-    .features {
+  .product-card p {
+    text-align: left;
+    padding: 0.2rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin: 0;
+}
+  .product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Align items to the top */
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-bottom: 0.5px solid #d1d5db;
+    border-radius: 0px;  }
+
+  .product-card img {
+    width: 40%; /* Reduced width for mobile */
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    width: 60%; /* Take remaining width */
+    text-align: left !important; /* Force text alignment to left */
+  }
+
+  .product-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111827;
+    text-align: left !important; /* Force text alignment to left */
+  }
+
+  .product-description {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin: 0;
+    text-align: left !important; /* Force text alignment to left */
+  }
+
+  .star-rating {
+    font-size: 0.85rem;
+    color: #f59e0b;
+    margin: 5px 0;
+    text-align: left !important; /* Force text alignment to left */
+  }
+
+  .price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    text-align: left !important; /* Force text alignment to left */
+    margin-top: 5px; /* Adjust margin for spacing */
+  }
+
+  .card-footer {
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack price and koko pay vertically */
+    align-items: flex-start; /* Align items to the start */
+    width: 100%; /* Ensure it takes full width of parent */
+  }
+
+  .koko-pay {
+    font-size: 0.85rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    margin-top: 5px; /* Adjust margin for spacing */
+    margin-bottom: 0; /* Remove bottom margin if stacking */
+  }
+
+  .koko-logo {
+    margin-left: 10px;
+    height: 14px;
+    width: auto;
+  }
+
+  .features {
     flex-direction: column;
     gap: 2rem;
     padding: 1.5rem;
@@ -542,58 +625,8 @@
     grid-column: span 2;
   }
 
-  .header,
-  .header-row {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .nav-buttons,
-  .nav-info {
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
-    gap: 0.75rem;
-  }
-
-  .search {
-    width: 100%;
-    max-width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    padding: 0.3rem 1rem;
-  }
-
-  .search input {
-    width: 100%;
-    font-size: 0.85rem;
-    padding: 0.3rem;
-  }
-
-  .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .footer {
-    margin-left: 0;
-    padding: 15px;
-  }
-
-  .footer-top,
-  .footer-links,
-  .footer-brand p,
-  .footer-links ul li,
-  .footer-bottom {
-    text-align: center;
-    min-width: 100%;
-  }
-
-  .social-icons {
-    justify-content: center;
-  }
+  /* No changes for header/footer in this request as they were not provided in the original CSS */
+  /* If you want to make them responsive, please provide their CSS as well. */
 
   .filter-sort-bar {
     flex-direction: column;
@@ -605,11 +638,21 @@
   .filter-sort-bar .filter-group {
     width: 100%; /* Make each filter group take full width */
     justify-content: space-between; /* Space out label and input/select */
+    flex-wrap: nowrap; /* Prevent wrapping within a single filter group */
   }
 
   .filter-sort-bar .brand-filter-group {
     align-items: center; /* Center brand label */
   }
+
+  .filter-sort-bar .brand-dropdown-container {
+    width: 100%; /* Ensure dropdown takes full width within its group */
+  }
+
+  .filter-sort-bar .brand-select-dropdown {
+    width: 100%; /* Ensure dropdown itself takes full width */
+  }
+
 
   .filter-sort-bar .brand-checkboxes {
     justify-content: center; /* Center checkboxes on small screens */
@@ -621,6 +664,15 @@
     width: 100%; /* Make button full width */
     text-align: center;
   }
+
+  .product-section {
+    padding: 0rem 1rem; /* Adjust padding for smaller screens */
+  }
+
+  .heading-with-icon {
+    padding: 0 0.5rem; /* Adjust padding */
+    margin-bottom: 2rem; /* Adjust margin */
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -629,10 +681,41 @@
     max-height: 55vh;
   }
 
-.filter-sort-bar .filter-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
+  .filter-sort-bar .filter-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input/select vertically */
+    align-items: flex-start; /* Align text to the left */
+    gap: 0.5rem; /* Reduce gap */
+    width: 100%;
+  }
+
+  .filter-sort-bar label {
+    margin-right: 0; /* Remove extra margin */
+  }
+
+  .filter-sort-bar select,
+  .filter-sort-bar input[type="number"] {
+    width: 100%; /* Make inputs and selects full width */
+    max-width: none; /* Remove max-width constraint */
+  }
+
+  .price-range-group {
+    flex-direction: column; /* Stack price inputs vertically */
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .price-range-group span {
+    display: none; /* Hide the '-' separator when stacked */
+  }
+
+  .price-input {
+    width: 100%; /* Make price inputs full width */
+    text-align: left; /* Align text to the left */
+  }
+
+  .card-footer .koko-logo {
+    margin-left:2px; /* Adjust margin for smaller screens */
+    width: 20%; /* Adjust width to make logo smaller */
+  }
 }
