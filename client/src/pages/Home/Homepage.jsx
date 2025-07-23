@@ -135,7 +135,7 @@ const Homepage = () => {
     <div className="home">
       {/* Static Banner Section */}
       <section className="banner">
-        <img src="/banner1.jpg" alt="Banner" className="banner-image" />
+        <img src="/banner1.jpg" className="banner-image" />
       </section>
 
       <section className="features">
