@@ -233,12 +233,14 @@
   top: calc(100% + 5px); /* below input */
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.15); /* very translucent white */
-  backdrop-filter: blur(18px); /* stronger blur */
-  -webkit-backdrop-filter: blur(18px);
+
+  background: rgba(102, 102, 102, 0.347); /* very light to mimic macOS */
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* soft shadow */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  
   z-index: 3100;
   padding: 0.5rem 0;
   max-height: 320px;
@@ -265,9 +267,8 @@
   width: 48px;
   height: 48px;
   object-fit: cover;
-  border-radius: 0.2rem;
-  background: #f3e6ef;
-  border: 1px solid #f3e6ef;
+  border-radius: 0rem;
+  background: #ffffff;
 }
 
 .search-suggestion-info {
@@ -284,7 +285,7 @@
 
 .search-suggestion-price {
   font-size: 0.98rem;
-  color: #c2c0c0;
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -319,20 +320,24 @@
   opacity: 0;
   transform: translateY(-10px) scale(0.98);
   pointer-events: none;
-  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 0.7rem;
+  transition: opacity 0.25s cubic-bezier(.4, 0, .2, 1), transform 0.25s cubic-bezier(.4, 0, .2, 1);
+
+  /* Glassmorphism core */
+  background: rgba(61, 61, 61, 0.347); /* very light to mimic macOS */
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+  color: #fff;
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   padding: 1.2rem 1.5rem;
   min-width: 250px;
   margin-top: 0.4rem;
   text-align: left;
 }
+
 
 
 .show-dropdown {
@@ -537,7 +542,7 @@
 
   /* Profile dropdown on mobile: position directly relative to profile icon */
   .dropdown-menu {
-    top: 2.5rem; /* Adjusted for better alignment below icon */
+    top: 1.5rem; /* Adjusted for better alignment below icon */
     right: 0;
     left: auto; /* Ensure it stays right-aligned */
     transform-origin: top right; /* For better scaling animation */
@@ -591,13 +596,13 @@
     border-radius: 0 0 12px 12px;
     max-height: 50vh;
     overflow-y: auto;
-
-     /* Glassmorphism background */
-  background: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
-  backdrop-filter: blur(10px); /* Frosted effect */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional soft shadow */
-  border-radius: 0px 0px 12px 12px; /* Optional: rounded corners */
+ /* Glassmorphism core */
+  background: rgba(61, 61, 61, 0.347); /* very light to mimic macOS */
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: 0rem 0rem 1rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   }
 }
 @media (min-width: 769px) {
@@ -647,6 +652,7 @@
     left: 5px;
     right: 5px;
     border-radius: 1rem; /* Smaller radius */
+    
   }
 
   .search-suggestion-item {
@@ -661,16 +667,16 @@
 
   .search-suggestion-name {
     font-size: 0.9rem;
-    color: #000;
+    color: #ffffff;
   }
 
   .search-suggestion-price {
     font-size: 0.8rem;
-    color: #000;
+    color: #ffffff;
   }
 
   .dropdown-menu {
-    right: 5px;
+    right: 0px;
     min-width: 140px;
     padding: 0.8rem;
   }
