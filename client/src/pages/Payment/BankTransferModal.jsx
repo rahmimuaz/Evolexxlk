@@ -106,41 +106,61 @@ const BankTransferModal = ({ onClose, onSubmit }) => {
         </p>
 
         <div className="bank-details-box">
-          <p>Bank Name: Example Bank PLC</p>
-          <p>Account Name: Your Company Name</p>
-          <p>Account Number: 1234 5678 9012 3456</p>
-          <p>SWIFT/BIC: EXABXXYY</p>
+          <p>Bank name : Commercial Bank PLC</p>
+          <p>Account Name: MMR.MUAZ</p>
+          <p>Account Number: 8018815463</p>
+          <p>Branch name : Mawanella</p>
         </div>
 
         <div className="file-upload-section">
-          <label htmlFor="transferProof" className="file-upload-label">
-            Attach Transfer Proof (PDF or Image - Max 5MB)
-          </label>
-          <input
-            type="file"
-            id="transferProof"
-            accept="image/*, application/pdf"
-            onChange={handleFileChange}
-            className="file-input"
-          />
-          {selectedFile && (
-            <p className="selected-file-name">Selected file: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</p>
-          )}
-          {previewUrl && selectedFile && selectedFile.type.startsWith('image/') && (
-            <div className="preview-container">
-              <img src={previewUrl} alt="File Preview" className="image-preview" />
-            </div>
-          )}
-          {previewUrl && selectedFile && selectedFile.type === 'application/pdf' && (
-            <div className="preview-container">
-              <p className="pdf-info">PDF file attached. Preview not available here.</p>
-            </div>
-          )}
+  <label htmlFor="transferProof" className="file-upload-label">
+    Attach Transfer Proof (PDF or Image - Max 5MB)
+  </label>
+  <input
+    type="file"
+    id="transferProof"
+    accept="image/*, application/pdf"
+    onChange={handleFileChange}
+    className="file-input"
+  />
 
-          {error && (
-            <p className="error-message">{error}</p>
-          )}
-        </div>
+  {selectedFile && (
+    <div className="selected-file-info">
+      <p className="selected-file-name">
+        Selected file: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+      </p>
+      <button
+        type="button"
+        className="remove-file-button"
+        onClick={() => {
+          setSelectedFile(null);
+          setPreviewUrl(null);
+          setError('');
+          // Also clear the input value to allow re-uploading the same file if needed
+          document.getElementById('transferProof').value = '';
+        }}
+      >
+        Remove
+      </button>
+    </div>
+  )}
+
+  {previewUrl && selectedFile && selectedFile.type.startsWith('image/') && (
+    <div className="preview-container">
+      <img src={previewUrl} alt="File Preview" className="image-preview" />
+    </div>
+  )}
+  {previewUrl && selectedFile && selectedFile.type === 'application/pdf' && (
+    <div className="preview-container">
+      <p className="pdf-info">PDF file attached. Preview not available here.</p>
+    </div>
+  )}
+
+  {error && (
+    <p className="error-message">{error}</p>
+  )}
+</div>
+
 
         <div className="modal-actions">
           <button
