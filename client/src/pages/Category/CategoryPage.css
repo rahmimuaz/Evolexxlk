@@ -1,14 +1,17 @@
 
-
-/* ============ PRODUCT SECTION ============ */
-.product-section {
-  margin-top: 10px;
+.product-section2 {
+  height: 81vh;
   padding: 0rem 2rem;
   text-align: center;
   background-color: #ffffff;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
+.product-section hr {
+  width: 99%;
+  margin: 40px 0;
+  border-top: 1px solid #e5e7eb;
+}
 /* Heading and Toggle Icon Container */
 .heading-with-icon {
   position: relative;
@@ -18,13 +21,14 @@
 }
 
 /* Center the heading in the middle of the page */
-.heading-with-icon h2 {
+.product-section2 h2 {
   font-size: 2rem;
   font-weight: 800;
-  margin: 0;
-  display: inline-block;
+  margin: 0 auto; /* Centers the heading */
+  position: relative;
+  display: block; /* Ensures it takes full width for margin auto to work */
   text-align: center;
-  margin-bottom: 0.5rem;
+  flex-grow: 1; /* Allows the heading to take available space */
 }
 
 /* Position the filter icon in the top-right corner with 20px offset from heading */
@@ -152,11 +156,12 @@
 }
 
 /* Pagination dots container */
-.pagination-dots {
+.pagination-dots2 {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
   margin-top: 40px;
+  margin-bottom: 50px;
 }
 
 /* Each dot style */

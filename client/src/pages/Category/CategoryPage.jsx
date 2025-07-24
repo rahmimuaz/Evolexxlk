@@ -123,7 +123,7 @@ const CategoryPage = () => {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div className="product-section">
+    <div className="product-section2">
       <div className="heading-with-icon">
         <h2 ref={headingRef}>{category}</h2>
         <FaSlidersH
@@ -208,7 +208,7 @@ const CategoryPage = () => {
         </div>
       </div>
 
-      <div className="pagination-dots">
+      <div className="pagination-dots2">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
           <div
             key={page}
@@ -218,7 +218,6 @@ const CategoryPage = () => {
           ></div>
         ))}
       </div>
-
       <Footer />
     </div>
   );
