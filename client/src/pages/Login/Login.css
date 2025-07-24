@@ -92,6 +92,47 @@
   color: #414141;
 }
 
+.google-login-wrapper {
+  margin: 16px 0;
+  display: flex;
+  justify-content: center; /* center horizontally */
+}
+
+.custom-google-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #4285f4;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.custom-google-button:disabled {
+  background-color: #a0c3ff;
+  cursor: not-allowed;
+}
+
+.custom-google-button:hover:not(:disabled) {
+  background-color: #3367d6;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3"><path fill="%234285f4" d="M533.5 278.4c0-17.7-1.5-34.7-4.3-51.3H272v97.3h146.9c-6.3 34-25 62.8-53.6 82v67h86.4c50.6-46.6 79.8-115.3 79.8-195z"/><path fill="%2334a853" d="M272 544.3c72.8 0 134-24.1 178.7-65.5l-86.4-67c-24 16.1-54.6 25.6-92.3 25.6-70.9 0-131-47.9-152.5-112.1h-89.5v70.2c44.4 87.3 135.9 148 242 148z"/><path fill="%23fbbc04" d="M119.5 323.2c-10.4-31.3-10.4-64.8 0-96.1v-70.2h-89.5c-38.8 75.7-38.8 166.3 0 242l89.5-75.7z"/><path fill="%23ea4335" d="M272 107.7c39.6-.6 77.6 14 106.6 40.4l79.7-79.7C402.5 24 342.5 0 272 0 165.9 0 74.4 60.7 30 148l89.5 70.2c21.4-64.1 81.6-112 152.5-110.5z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
 
 /* Tablets and small laptops */
 @media (max-width: 1024px) {

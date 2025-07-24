@@ -72,10 +72,22 @@ const Login = ({ asModal = false, onSuccess, onSwitchRegister }) => {
         </div>
         <button type="submit" className="login-button">Login</button>
       </form>
-      <div style={{ margin: '16px 0' }}>
+
+      <div className="google-login-wrapper">
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={() => alert('Google Login Failed')}
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              className="custom-google-button"
+              type="button"
+            >
+              <span className="google-icon" />
+              Sign in with Google
+            </button>
+          )}
         />
       </div>
     </>
