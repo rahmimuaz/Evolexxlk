@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './AddProduct.css';
+import SimpleMDE from 'react-simplemde-editor';
+import 'easymde/dist/easymde.min.css';
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -15,12 +17,14 @@ const AddProduct = () => {
     stock: '',
     details: {},
     warrantyPeriod: 'No Warranty',
-    discountPrice: ''
+    discountPrice: '',
+    kokoPay: false
   });
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [discountError, setDiscountError] = useState('');
 
   // Define the API base URL from environment variables
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -77,8 +81,25 @@ const AddProduct = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    if (name === 'discountPrice') {
+      if (value && Number(value) > Number(formData.price)) {
+        setDiscountError('Discount/Offer price cannot be greater than Price.');
+      } else {
+        setDiscountError('');
+      }
+    }
+    if (name === 'price' && formData.discountPrice) {
+      if (Number(formData.discountPrice) > Number(value)) {
+        setDiscountError('Discount/Offer price cannot be greater than Price.');
+      } else {
+        setDiscountError('');
+      }
+    }
   };
 
   const handleDetailChange = (e) => {
@@ -110,6 +131,10 @@ const AddProduct = () => {
       alert('Please upload at least one image.');
       return;
     }
+    if (formData.discountPrice && Number(formData.discountPrice) > Number(formData.price)) {
+      alert('Discount/Offer price cannot be greater than Price.');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -123,6 +148,7 @@ const AddProduct = () => {
       formDataToSend.append('discountPrice', formData.discountPrice);
       formDataToSend.append('stock', formData.stock);
       formDataToSend.append('details', JSON.stringify(formData.details));
+      formDataToSend.append('kokoPay', formData.kokoPay);
 
       selectedFiles.forEach(file => {
         formDataToSend.append('images', file);
@@ -219,13 +245,10 @@ const AddProduct = () => {
           </div>
           <div className="form-field" style={{ marginTop: '1rem' }}>
             <label className="form-label">Long Description</label>
-            <textarea
-              name="longDescription"
+            <SimpleMDE
               value={formData.longDescription}
-              onChange={handleInputChange}
-              rows="6"
-              className="form-textarea"
-              placeholder="Enter a more detailed description (optional)"
+              onChange={value => setFormData(prev => ({ ...prev, longDescription: value }))}
+              options={{ placeholder: 'Enter a more detailed description (supports Markdown formatting)' }}
             />
           </div>
           <div className="form-field">
@@ -253,6 +276,19 @@ const AddProduct = () => {
               placeholder="Enter offer price (optional)"
               min="0"
             />
+            {discountError && <div className="error-message" style={{ color: 'red', fontSize: '0.9em' }}>{discountError}</div>}
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              <input
+                type="checkbox"
+                name="kokoPay"
+                checked={formData.kokoPay}
+                onChange={handleInputChange}
+                style={{ marginRight: '8px' }}
+              />
+              Enable KOKO Pay (3 installments)
+            </label>
           </div>
         </div>
 
