@@ -8,6 +8,7 @@ import { useUser } from '../../context/UserContext';
 import Modal from '../../components/Modal';
 import Login from '../../pages/Login/Login'; // Assuming this is the correct path to your Login component
 import Register from '../../pages/Login/Register'; // Assuming this is the correct path to your Register component
+import ReactMarkdown from 'react-markdown';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -252,6 +253,11 @@ const ProductDetail = () => {
               ) : (
                 <p className="product-price">Rs. {product.price?.toLocaleString() ?? 'N/A'}</p>
               )}
+              {product.kokoPay && product.price && (
+                <p className="koko-pay">
+                  or pay in 3 × Rs. {((product.price * 1.12) / 3).toLocaleString('en-LK', { minimumFractionDigits: 2 })} with <img src="/koko.webp" alt="Koko" className="koko-logo" />
+                </p>
+              )}
             </div>
 
             <hr className="section-divider" />
@@ -417,9 +423,7 @@ const ProductDetail = () => {
           <div className="product-description-section">
             <h2>Description</h2>
             {product.longDescription && (
-              <>
-                <p>{product.longDescription}</p>
-              </>
+              <ReactMarkdown>{product.longDescription}</ReactMarkdown>
             )}
           </div>
         )}

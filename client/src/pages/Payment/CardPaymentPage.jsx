@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './CardPaymentPage.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
 const CardPaymentPage = () => {
   const navigate = useNavigate();
   const [cardNumber, setCardNumber] = useState('');

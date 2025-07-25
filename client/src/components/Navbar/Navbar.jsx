@@ -65,15 +65,6 @@ const Navbar = () => {
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-    if (searchOpen) {
-      setSearchQuery('');
-      setSearchResults([]);
-      setSearchError(null);
-    }
-  };
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   useEffect(() => {
@@ -277,6 +268,10 @@ const Navbar = () => {
                   <Link to="/settings" className="dropdown-link" onClick={() => setDropdownOpen(false)}>
                     <FaCog className="dropdown-icon" />
                     Settings
+                  </Link>
+                  <Link to="/my-orders" className="dropdown-link" onClick={() => setDropdownOpen(false)}>
+                    <FaShoppingCart className="dropdown-icon" />
+                    My Orders
                   </Link>
                   <button className="logout-dropdown-button" onClick={logout}>
                     <FaSignOutAlt className="dropdown-icon" />

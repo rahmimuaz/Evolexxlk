@@ -1,0 +1,125 @@
+/* src/pages/MyOrders/MyOrders.css */
+
+.my-orders-container {
+    margin: 32px auto;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .my-orders-container h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .my-orders-container div {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 1.1em;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table thead tr {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table th {
+    padding: 12px 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  table tbody tr {
+    border-bottom: 1px solid #eee;
+  }
+  
+  table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  table td {
+    padding: 12px 8px;
+    border: 1px solid #ddd;
+    color: #666;
+  }
+  
+  table td a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  table td a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .my-orders-container {
+      margin: 16px;
+      padding: 10px;
+    }
+  
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+  
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  
+    tr {
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+  
+    td {
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50%;
+      text-align: right;
+    }
+  
+    td:last-child {
+      border-bottom: none;
+    }
+  
+    td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      width: calc(50% - 20px);
+      padding-right: 10px;
+      white-space: nowrap;
+      text-align: left;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+  
+  /* Specific labels for mobile view */
+  /* You need to add data-label attributes to your <td> elements in MyOrders.jsx
+     For example: <td data-label="Order #">{order.orderNumber || order._id}</td>
+  */

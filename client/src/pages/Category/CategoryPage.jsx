@@ -195,7 +195,7 @@ const CategoryPage = () => {
                     <p className="price">
                       Rs. {fullPrice.toLocaleString('en-LK', { minimumFractionDigits: 2 })}
                     </p>
-                    {product.price && (
+                    {product.kokoPay && product.price && (
                       <p className="koko-pay">
                         or pay in 3 × Rs. {kokoInstallment.toLocaleString('en-LK', { minimumFractionDigits: 2 })} with <img src="/koko.webp" alt="Koko" className="koko-logo" />
                       </p>
