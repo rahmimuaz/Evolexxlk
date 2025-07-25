@@ -130,6 +130,13 @@ const Homepage = () => {
     setCurrentPage(1);
   };
 
+  const getAverageRating = (reviews = []) => {
+  if (!reviews.length) return 0;
+  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+  return total / reviews.length;
+};
+
+
   if (loading) return <div className="loader">Loading products...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -242,9 +249,11 @@ const Homepage = () => {
                   <div className="product-card-content">
                     <h3 className="product-name">{product.name}</h3>
                     <p className="product-description">{product.description}</p>
-                    <div className="star-rating">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span key={star}>{product.rating >= star ? '★' : '☆'}</span>
+                   <div className="star-rating">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star}>
+                       {getAverageRating(product.reviews) >= star ? '★' : '☆'}
+                      </span>
                       ))}
                     </div>
                     <div className="card-footer">
@@ -253,7 +262,7 @@ const Homepage = () => {
                       </p>
                       {product.kokoPay && product.price && (
                         <p className="koko-pay">
-                          or pay in 3 × Rs.{" "}
+                           pay in 3 × Rs.{" "}
                           {kokoInstallment.toLocaleString("en-LK", { minimumFractionDigits: 2 })}{" "}
                           with <img src="/koko.webp" alt="Koko" className="koko-logo" />
                         </p>
