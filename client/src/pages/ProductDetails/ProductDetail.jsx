@@ -1,3 +1,4 @@
+// ProductDetail.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -6,8 +7,8 @@ import './ProductDetail.css';
 import Footer from '../../components/Footer/Footer';
 import { useUser } from '../../context/UserContext';
 import Modal from '../../components/Modal';
-import Login from '../../pages/Login/Login'; // Assuming this is the correct path to your Login component
-import Register from '../../pages/Login/Register'; // Assuming this is the correct path to your Register component
+import Login from '../../pages/Login/Login';
+import Register from '../../pages/Login/Register';
 import ReactMarkdown from 'react-markdown';
 
 const ProductDetail = () => {
@@ -26,9 +27,9 @@ const ProductDetail = () => {
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
   const [reviewError, setReviewError] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
-  const [activeTab, setActiveTab] = useState('Description'); // State for active tab
-  const [filteredReviews, setFilteredReviews] = useState([]); // State for filtered reviews
-  const [selectedReviewFilter, setSelectedReviewFilter] = useState('All ratings'); // State for selected review filter
+  const [activeTab, setActiveTab] = useState('Description');
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [selectedReviewFilter, setSelectedReviewFilter] = useState('All ratings');
 
   // State for modals
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -68,7 +69,11 @@ const ProductDetail = () => {
           setReviews(res.data);
           setFilteredReviews(res.data); // Initialize filtered reviews with all reviews
         })
-        .catch(() => setReviews([]));
+        .catch((err) => {
+            console.error("Error fetching reviews:", err);
+            setReviews([]);
+            setFilteredReviews([]);
+        });
     }
   }, [product, id, API_BASE_URL]);
 
@@ -85,7 +90,6 @@ const ProductDetail = () => {
       if (selectedReviewFilter === 'All ratings') {
         setFilteredReviews(tempReviews);
       } else if (selectedReviewFilter.includes('positive')) {
-        // This is a simplified example. You'd need a more robust way to categorize reviews
         setFilteredReviews(tempReviews.filter(review => review.rating >= 4));
       } else if (selectedReviewFilter.includes('disappointed')) {
         setFilteredReviews(tempReviews.filter(review => review.rating <= 2));
@@ -140,7 +144,7 @@ const ProductDetail = () => {
     if (imagePath.startsWith('http')) return imagePath;
     if (imagePath.startsWith('uploads/')) return `${API_BASE_URL}/${imagePath}`;
     if (imagePath.startsWith('/uploads/')) return `${API_BASE_URL}${imagePath}`;
-    return `${API_BASE_URL}/uploads/${imagePath}`;
+    return `${API_BASE_URL}/uploads/${imagePath}`; // Default fallback
   };
 
   const currentMainImageUrl = cleanImagePath(mainImage);
@@ -150,10 +154,9 @@ const ProductDetail = () => {
     setReviewSubmitting(true);
     setReviewError(null);
     try {
-      await axios.post(`${API_BASE_URL}/api/products/${id}/reviews`, {
+      const response = await axios.post(`${API_BASE_URL}/api/products/${id}/reviews`, {
         rating: reviewRating,
         comment: reviewComment,
-        // Assuming your backend can derive userId from auth token
       }, {
         headers: {
           Authorization: `Bearer ${user?.token}` // Include user token if available for authentication
@@ -161,11 +164,11 @@ const ProductDetail = () => {
       });
       setReviewComment('');
       setReviewRating(5);
-      const res = await axios.get(`${API_BASE_URL}/api/products/${id}/reviews`);
-      setReviews(res.data);
-      setFilteredReviews(res.data); // Update filtered reviews after new submission
+      // After successful submission, update reviews with the new populated review from the response
+      setReviews(prevReviews => [...prevReviews, response.data.review]);
+      setFilteredReviews(prevReviews => [...prevReviews, response.data.review]); // Also update filtered reviews
     } catch (err) {
-      setReviewError('Failed to submit review. Please ensure you are logged in.');
+      setReviewError(err.response?.data?.message || 'Failed to submit review. Please ensure you are logged in.');
       console.error("Review submission error:", err);
     } finally {
       setReviewSubmitting(false);
@@ -214,7 +217,7 @@ const ProductDetail = () => {
                 <img
                   key={i}
                   src={cleanImagePath(img)}
-                  alt={`${product.name} ${i + 1}`} // Corrected previously
+                  alt={`${product.name} ${i + 1}`}
                   className={`thumbnail-image ${mainImage === img ? 'selected' : ''}`}
                   onClick={() => handleThumbnailClick(img)}
                   onError={(e) => (e.target.src = '/logo192.png')}
@@ -516,7 +519,10 @@ const ProductDetail = () => {
                       {/* Replace with actual user avatar if available */}
                       <svg className="h-6 w-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
                     </span>
-                    <span className="reviewer-name">{review.user?.username || `User ${review.userId || idx + 1}`}</span> {/* Assuming review object has user info */}
+                    <span className="reviewer-name">
+                      {/* THIS IS THE UPDATED PART: Use review.user.name */}
+                      {review.user ? review.user.name : `User ${review._id || idx + 1}`}
+                    </span>
                   </div>
                   <div className="review-rating">
                     {[...Array(5)].map((_, i) => (
@@ -534,14 +540,14 @@ const ProductDetail = () => {
                       <img
                         key={i}
                         src={cleanImagePath(img)}
-                        alt={`Review ${i + 1}`} // FIX: Removed 'image' from alt text for review images
+                        alt={`Review ${i + 1}`}
                         className="review-thumbnail-image"
                       />
                     ))}
                   </div>
                 )}
                 <div className="review-meta">
-                  <span className="review-date">{review.createdAt ? new Date(review.createdAt).toLocaleDateString() : ''}</span>
+                  <span className="review-date">{review.date ? new Date(review.date).toLocaleDateString() : ''}</span> {/* Use review.date */}
                   <button className="helpful-button">Helpful (0)</button> {/* Placeholder for helpful button */}
                 </div>
               </div>
@@ -598,7 +604,7 @@ const ProductDetail = () => {
       <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <Login
           asModal
-          sourcePage="productDetail" // THIS IS THE KEY CHANGE: Passing the sourcePage prop
+          sourcePage="productDetail"
           onSuccess={() => setLoginModalOpen(false)}
           onSwitchRegister={() => {
             setLoginModalOpen(false);
