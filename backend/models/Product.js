@@ -106,6 +106,10 @@ const productSchema = new mongoose.Schema({
   details: {
     type: mongoose.Schema.Types.Mixed,
     required: true
+  },
+  kokoPay: {
+    type: Boolean,
+    default: false
   }
 });
 

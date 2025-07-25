@@ -28,7 +28,7 @@ export const getProduct = async (req, res) => {
 // Create new product
 export const createProduct = async (req, res) => {
   try {
-    const { name, category, price, description, longDescription, stock, details, warrantyPeriod, discountPrice } = req.body;
+    const { name, category, price, description, longDescription, stock, details, warrantyPeriod, discountPrice, kokoPay } = req.body;
 
     // Check if files were uploaded
     if (!req.files || req.files.length === 0) {
@@ -87,7 +87,8 @@ export const createProduct = async (req, res) => {
       stock: parseInt(stock) || 0,
       details: parsedDetails,
       warrantyPeriod: warrantyPeriod || 'No Warranty',
-      discountPrice: discountPrice ? parseFloat(discountPrice) : undefined
+      discountPrice: discountPrice ? parseFloat(discountPrice) : undefined,
+      kokoPay: kokoPay === 'true' || kokoPay === true
     });
 
     const savedProduct = await newProduct.save();
@@ -120,7 +121,7 @@ export const createProduct = async (req, res) => {
 // Update product
 export const updateProduct = async (req, res) => {
   try {
-    const { name, category, price, description, longDescription, stock, details, warrantyPeriod, discountPrice } = req.body;
+    const { name, category, price, description, longDescription, stock, details, warrantyPeriod, discountPrice, kokoPay } = req.body;
     const parsedDetails = typeof details === 'string' ? JSON.parse(details) : details;
 
     // Get the current product to compare images
@@ -186,7 +187,8 @@ export const updateProduct = async (req, res) => {
         stock: parseInt(stock) || 0,
         details: parsedDetails,
         warrantyPeriod: warrantyPeriod || 'No Warranty',
-        discountPrice: discountPrice ? parseFloat(discountPrice) : undefined
+        discountPrice: discountPrice ? parseFloat(discountPrice) : undefined,
+        kokoPay: kokoPay === 'true' || kokoPay === true
       },
       { new: true }
     );
