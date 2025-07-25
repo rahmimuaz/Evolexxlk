@@ -213,7 +213,7 @@ const ProductDetail = () => {
                 <img
                   key={i}
                   src={cleanImagePath(img)}
-                  alt={`${product.name} thumbnail ${i + 1}`}
+                  alt={`${product.name} ${i + 1}`} // Corrected previously
                   className={`thumbnail-image ${mainImage === img ? 'selected' : ''}`}
                   onClick={() => handleThumbnailClick(img)}
                   onError={(e) => (e.target.src = '/logo192.png')}
@@ -527,7 +527,12 @@ const ProductDetail = () => {
                 {review.images && review.images.length > 0 && (
                   <div className="review-images">
                     {review.images.map((img, i) => (
-                      <img key={i} src={cleanImagePath(img)} alt={`Review image ${i}`} className="review-thumbnail-image" />
+                      <img
+                        key={i}
+                        src={cleanImagePath(img)}
+                        alt={`Review ${i + 1}`} // FIX: Removed 'image' from alt text for review images
+                        className="review-thumbnail-image"
+                      />
                     ))}
                   </div>
                 )}
