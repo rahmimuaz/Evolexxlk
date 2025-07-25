@@ -210,6 +210,9 @@
   .register-link {
     font-size: 0.95rem;
   }
+  .login-prompt-message {
+    font-size: 0.7rem;
+  }
 }
 
 /* Small phones */
@@ -228,5 +231,8 @@
   .register-text,
   .register-link {
     font-size: 0.9rem;
+  }
+   .login-prompt-message {
+    font-size: 0.7rem;
   }
 }
