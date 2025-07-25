@@ -5,6 +5,9 @@ import { useCart } from '../../context/CartContext';
 import './ProductDetail.css';
 import Footer from '../../components/Footer/Footer';
 import { useUser } from '../../context/UserContext';
+import Modal from '../../components/Modal';
+import Login from '../../pages/Login/Login'; // Assuming this is the correct path to your Login component
+import Register from '../../pages/Login/Register'; // Assuming this is the correct path to your Register component
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -25,6 +28,10 @@ const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState('Description'); // State for active tab
   const [filteredReviews, setFilteredReviews] = useState([]); // State for filtered reviews
   const [selectedReviewFilter, setSelectedReviewFilter] = useState('All ratings'); // State for selected review filter
+
+  // State for modals
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
   // Base URL for API calls
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -102,6 +109,10 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
+    if (!user) { // Check if user is logged in
+      setLoginModalOpen(true); // Open login modal if not logged in
+      return;
+    }
     if (product) {
       addToCart({ ...product, selectedColor }, quantity);
       navigate('/cart');
@@ -109,6 +120,10 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = () => {
+    if (!user) { // Check if user is logged in
+      setLoginModalOpen(true); // Open login modal if not logged in
+      return;
+    }
     if (product) {
       addToCart({ ...product, selectedColor }, quantity);
       navigate('/checkout');
@@ -272,12 +287,12 @@ const ProductDetail = () => {
 
               <div className="quantity-selector-section">
                 <div className="stock-status-section">
-              {product.stock > 0 ? (
-                <span className="in-stock" style={{ color: 'green', fontWeight: 'bold' }}>In Stock</span>
-              ) : (
-                <span className="out-of-stock" style={{ color: 'red', fontWeight: 'bold' }}>Out of Stock</span>
-              )}
-            </div>
+                  {product.stock > 0 ? (
+                    <span className="in-stock" style={{ color: 'green', fontWeight: 'bold' }}>In Stock</span>
+                  ) : (
+                    <span className="out-of-stock" style={{ color: 'red', fontWeight: 'bold' }}>Out of Stock</span>
+                  )}
+                </div>
                 <div className="quantity-controls">
                   <button onClick={() => handleQuantityChange('decrement')} className="quantity-button">-</button>
                   <input type="text" value={quantity.toString().padStart(2, '0')} readOnly className="quantity-input" />
@@ -285,10 +300,9 @@ const ProductDetail = () => {
                 </div>
                 <span className="stock-info">Only {product.stock} left in stock</span>
               </div>
-              
+
             </div>
 
-            
 
             <div className="purchase-section">
               <div className="action-buttons-container">
@@ -308,8 +322,8 @@ const ProductDetail = () => {
               <div className="info-list">
                 <div className="info-list-item">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                   </svg>
                   <div>
                     <p className="font-semibold">Standard</p>
@@ -323,8 +337,8 @@ const ProductDetail = () => {
               <h2 className="info-block-title">Payment Options</h2>
               <div className="info-list">
                 <div className="info-list-item">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                   </svg>
 
 
@@ -336,7 +350,7 @@ const ProductDetail = () => {
 
                 <div className="info-list-item">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                   </svg>
 
                   <div>
@@ -347,7 +361,7 @@ const ProductDetail = () => {
 
                 <div className="info-list-item">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
                   </svg>
 
                   <div>
@@ -357,14 +371,14 @@ const ProductDetail = () => {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <h2 className="info-block-title">Returns & Warranty Policy</h2>
               <div className="info-list">
                 <div className="info-list-item">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                  </svg>
                   <div>
                     <p className="font-semibold">7-day return & warranty.</p>
                     <p className="sub-text">Terms and conditions apply.</p>
@@ -430,62 +444,62 @@ const ProductDetail = () => {
         {activeTab === 'Customer Reviews' && (
           <div className="product-reviews-section">
             <h2>Reviews {averageRating} <span className="stars-in-reviews">
-                {[...Array(5)].map((_, i) => (
-                    <span key={i} style={{ color: i < Math.floor(averageRating) ? '#FFD700' : '#ccc' }}>★</span>
-                ))}
+              {[...Array(5)].map((_, i) => (
+                <span key={i} style={{ color: i < Math.floor(averageRating) ? '#FFD700' : '#ccc' }}>★</span>
+              ))}
             </span> {reviews.length} ratings <span className="verified-purchases"> All from verified purchases</span></h2>
 
             {/* Review Filter Buttons */}
             <div className="review-filters">
-                <button
-                    className={`filter-button ${selectedReviewFilter === 'All ratings' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('All ratings')}
-                >
-                    All ratings ({reviews.length})
-                </button>
-                {ratingCounts[5] > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === '5' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('5')}
-                >
-                    (5) ({ratingCounts[5]})
-                </button>}
-                {ratingCounts[4] > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === '4' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('4')}
-                >
-                    (4) ({ratingCounts[4]})
-                </button>}
-                {ratingCounts[3] > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === '3' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('3')}
-                >
-                    (3) ({ratingCounts[3]})
-                </button>}
-                {ratingCounts[2] > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === '2' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('2')}
-                >
-                    (2) ({ratingCounts[2]})
-                </button>}
-                {ratingCounts[1] > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === '1' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('1')}
-                >
-                    (1) ({ratingCounts[1]})
-                </button>}
-                {positiveReviewsCount > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === 'positive' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('positive')}
-                >
-                    positive ({positiveReviewsCount})
-                </button>}
-                {disappointedReviewsCount > 0 && <button
-                    className={`filter-button ${selectedReviewFilter === 'disappointed' ? 'active' : ''}`}
-                    onClick={() => setSelectedReviewFilter('disappointed')}
-                >
-                    disappointed ({disappointedReviewsCount})
-                </button>}
-                {/* You can add more specific filters as needed, e.g., 'beautiful shape' if you had tags in your review data */}
+              <button
+                className={`filter-button ${selectedReviewFilter === 'All ratings' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('All ratings')}
+              >
+                All ratings ({reviews.length})
+              </button>
+              {ratingCounts[5] > 0 && <button
+                className={`filter-button ${selectedReviewFilter === '5' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('5')}
+              >
+                (5) ({ratingCounts[5]})
+              </button>}
+              {ratingCounts[4] > 0 && <button
+                className={`filter-button ${selectedReviewFilter === '4' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('4')}
+              >
+                (4) ({ratingCounts[4]})
+              </button>}
+              {ratingCounts[3] > 0 && <button
+                className={`filter-button ${selectedReviewFilter === '3' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('3')}
+              >
+                (3) ({ratingCounts[3]})
+              </button>}
+              {ratingCounts[2] > 0 && <button
+                className={`filter-button ${selectedReviewFilter === '2' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('2')}
+              >
+                (2) ({ratingCounts[2]})
+              </button>}
+              {ratingCounts[1] > 0 && <button
+                className={`filter-button ${selectedReviewFilter === '1' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('1')}
+              >
+                (1) ({ratingCounts[1]})
+              </button>}
+              {positiveReviewsCount > 0 && <button
+                className={`filter-button ${selectedReviewFilter === 'positive' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('positive')}
+              >
+                positive ({positiveReviewsCount})
+              </button>}
+              {disappointedReviewsCount > 0 && <button
+                className={`filter-button ${selectedReviewFilter === 'disappointed' ? 'active' : ''}`}
+                onClick={() => setSelectedReviewFilter('disappointed')}
+              >
+                disappointed ({disappointedReviewsCount})
+              </button>}
+              {/* You can add more specific filters as needed, e.g., 'beautiful shape' if you had tags in your review data */}
             </div>
 
 
@@ -493,29 +507,29 @@ const ProductDetail = () => {
             {filteredReviews.map((review, idx) => (
               <div key={idx} className="review-item">
                 <div className="review-header">
-                    <div className="reviewer-info">
-                        <span className="reviewer-avatar">
-                            {/* Replace with actual user avatar if available */}
-                            <svg className="h-6 w-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
-                        </span>
-                        <span className="reviewer-name">{review.user?.username || `User ${review.userId || idx + 1}`}</span> {/* Assuming review object has user info */}
-                    </div>
-                    <div className="review-rating">
-                        {[...Array(5)].map((_, i) => (
-                            <span key={i} style={{ color: i < review.rating ? '#FFD700' : '#ccc' }}>★</span>
-                        ))}
-                    </div>
+                  <div className="reviewer-info">
+                    <span className="reviewer-avatar">
+                      {/* Replace with actual user avatar if available */}
+                      <svg className="h-6 w-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
+                    </span>
+                    <span className="reviewer-name">{review.user?.username || `User ${review.userId || idx + 1}`}</span> {/* Assuming review object has user info */}
+                  </div>
+                  <div className="review-rating">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} style={{ color: i < review.rating ? '#FFD700' : '#ccc' }}>★</span>
+                    ))}
+                  </div>
                 </div>
                 {review.productColor && <div className="review-product-details">
-                    Color: {review.productColor}
+                  Color: {review.productColor}
                 </div>}
                 <div className="review-comment">{review.comment}</div>
                 {review.images && review.images.length > 0 && (
-                    <div className="review-images">
-                        {review.images.map((img, i) => (
-                            <img key={i} src={cleanImagePath(img)} alt={`Review image ${i}`} className="review-thumbnail-image" />
-                        ))}
-                    </div>
+                  <div className="review-images">
+                    {review.images.map((img, i) => (
+                      <img key={i} src={cleanImagePath(img)} alt={`Review image ${i}`} className="review-thumbnail-image" />
+                    ))}
+                  </div>
                 )}
                 <div className="review-meta">
                   <span className="review-date">{review.createdAt ? new Date(review.createdAt).toLocaleDateString() : ''}</span>
@@ -570,6 +584,29 @@ const ProductDetail = () => {
 
       </div>
       <Footer />
+
+      {/* Login/Register Modals */}
+      <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
+        <Login
+          asModal
+          sourcePage="productDetail" // THIS IS THE KEY CHANGE: Passing the sourcePage prop
+          onSuccess={() => setLoginModalOpen(false)}
+          onSwitchRegister={() => {
+            setLoginModalOpen(false);
+            setRegisterModalOpen(true);
+          }}
+        />
+      </Modal>
+      <Modal isOpen={registerModalOpen} onClose={() => setRegisterModalOpen(false)} title="Register">
+        <Register
+          asModal
+          onSuccess={() => setRegisterModalOpen(false)}
+          onSwitchLogin={() => {
+            setRegisterModalOpen(false);
+            setLoginModalOpen(true);
+          }}
+        />
+      </Modal>
     </div>
   );
 };

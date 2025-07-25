@@ -1,3 +1,5 @@
+// src/components/Auth/Login.jsx (or wherever your Login component is located)
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
@@ -7,7 +9,7 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const Login = ({ asModal = false, onSuccess, onSwitchRegister }) => {
+const Login = ({ asModal = false, onSuccess, onSwitchRegister, sourcePage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -44,7 +46,23 @@ const Login = ({ asModal = false, onSuccess, onSwitchRegister }) => {
 
   const LoginForm = () => (
     <>
-      <h2 className="login-title">Login</h2>
+          <h2 className="login-title">Login</h2>
+      {/* Conditionally show the message ONLY if asModal is true AND sourcePage is 'productDetail' */}
+      {asModal && sourcePage === 'productDetail' && (
+        <p className="login-prompt-message">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+</svg>
+
+           <span className="message-text">
+            Please log in to add items to your cart
+            <br />
+            or proceed with your purchase.
+          </span>
+        </p>
+      )}
+
+
       <form onSubmit={submitHandler}>
         <div className="form-group">
           <label htmlFor="email" className="form-label">Email Address</label>

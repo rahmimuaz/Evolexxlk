@@ -33,7 +33,6 @@
 .form-input {
   background: rgba(255, 255, 255, 0.7);
   border: 1.5px solid rgba(255, 255, 255, 0.4);
-  border-radius: 1.5rem;
   padding: 0.7rem 1.2rem;
   font-size: 1rem;
   outline: none;
@@ -150,6 +149,46 @@
     font-size: 1rem;
   }
 }
+/* -------------------------------------- */
+/* Styling for the new warning message */
+/* -------------------------------------- */
+/* Styles for the warning message container */
+.login-prompt-message {
+  margin-top: 20px;
+  background-color: #fff3cd; /* Light warning yellow */
+  color: #856404; /* Darker yellow/brown text */
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px; /* Space below it */
+  font-size: 0.95em;
+  text-align: center;
+  border: 1px solid #ffeeba; /* Slightly darker border */
+  display: flex; /* Use flexbox to align icon and text */
+  align-items: center; /* Vertically align items */
+  justify-content: center; /* Center content horizontally */
+  gap: 10px; /* Space between icon and text */
+  font-weight: 500; /* Make the text a bit bolder */
+}
+
+/* Styles for the SVG icon itself */
+.warning-icon {
+  width: 24px;   /* Sets the width of the icon */
+  height: 24px;  /* Sets the height of the icon */
+  min-width: 24px; /* Ensures the icon doesn't shrink in flex containers */
+  color: #ffc107; /* Sets the fill color of the icon (a shade of orange/yellow) */
+  /* If you want a specific stroke color different from 'fill', you can add: */
+  /* stroke: #yourStrokeColor; */
+}
+
+/* You could also use a different size class if you prefer */
+/* If you use "size-6" directly on the SVG: */
+.size-6 {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  color: #ffc107; /* Or whatever color you want it to be */
+}
+
 
 /* Mobile devices */
 @media (max-width: 768px) {
