@@ -16,13 +16,27 @@ const MyOrders = () => {
     const fetchOrders = async () => {
       if (!user) return;
       try {
-        const res = await axios.get(`${API_BASE_URL}/api/orders/myorders`, {
-          headers: { Authorization: `Bearer ${user.token}` }
-        });
-        setOrders(res.data);
+        setLoading(true); // Set loading to true before fetching
+        const [pendingOrdersRes, shippedOrdersRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/api/orders/myorders`, { // Assuming this fetches user's pending orders
+            headers: { Authorization: `Bearer ${user.token}` }
+          }),
+          axios.get(`${API_BASE_URL}/api/tobeshipped/myorders`, { // **NEW ENDPOINT for TobeShipped orders**
+            headers: { Authorization: `Bearer ${user.token}` }
+          })
+        ]);
+
+        // Combine the results from both schemas
+        const combinedOrders = [...pendingOrdersRes.data, ...shippedOrdersRes.data];
+
+        // Sort orders by creation date (most recent first) for better display
+        combinedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setOrders(combinedOrders);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch orders.');
+        console.error('Error fetching orders:', err);
+        setError('Failed to fetch orders. Please try again.');
         setLoading(false);
       }
     };
@@ -37,7 +51,7 @@ const MyOrders = () => {
     <div className="orders-container">
       <h2 className="orders-heading">My Orders</h2>
       {orders.length === 0 ? (
-        <div>No orders found.</div>
+        <div className="orders-message">No orders found.</div>
       ) : (
         <table className="orders-table">
           <thead>

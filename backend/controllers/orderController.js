@@ -1,5 +1,5 @@
 import Order from '../models/Order.js';
-import User from '../models/userModel.js';
+import User from '../models/userModel.js'; // Assuming userModel.js contains your User model
 import ToBeShipped from '../models/ToBeShipped.js'; // Import the ToBeShipped model
 import Product from '../models/Product.js';
 
@@ -14,7 +14,7 @@ export const getOrders = asyncHandler(async (req, res) => {
     .populate('user', 'name email')
     .populate('orderItems.product')
     .sort({ createdAt: -1 });
-  
+
   // Debug: Log order details
   console.log('=== ORDERS DEBUG ===');
   orders.forEach((order, index) => {
@@ -27,7 +27,7 @@ export const getOrders = asyncHandler(async (req, res) => {
     });
   });
   console.log('=== END ORDERS DEBUG ===');
-  
+
   res.status(200).json(orders);
 });
 
@@ -97,7 +97,7 @@ export const createOrder = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error('No items in cart');
     }
-    
+
     finalOrderItems = userWithCart.cart.map(item => ({
       product: item.product._id,
       quantity: item.quantity,
@@ -128,7 +128,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     );
     if (updatedProduct.stock > 0 && updatedProduct.stock < 5) {
       await sendEmail(
-        process.env.ALERT_EMAIL_USER,
+        process.env.ALERT_EMAIL_USER, // Ensure this ENV var is set for admin alerts
         'Low Stock Alert',
         `Product "${updatedProduct.name}" is low on stock. Only ${updatedProduct.stock} left.`
       );
@@ -136,7 +136,7 @@ export const createOrder = asyncHandler(async (req, res) => {
   }
 
   try {
-    const orderNumber = await Order.generateOrderNumber();
+    const orderNumber = await Order.generateOrderNumber(); // Assuming this is a static method on Order model
 
     // Create order object with conditional bankTransferProof
     const orderData = {
@@ -166,7 +166,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 
     // Send new order email to admin
     await sendEmail(
-      process.env.ALERT_EMAIL_USER,
+      process.env.ALERT_EMAIL_USER, // Ensure this ENV var is set for admin alerts
       'New Order Received',
       `Evolexx Store\nNew Order Received\nA new order has been placed. Order ID: ${order._id}\n\nView Order: http://localhost:3000/admin/orders/${order._id}`
     );
@@ -213,12 +213,18 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   }
 
   const order = await Order.findById(req.params.id)
-    .populate('user', 'name email')
+    .populate('user', 'name email') // This populates order.user correctly
     .populate('orderItems.product');
 
   if (!order) {
     res.status(404);
     throw new Error('Order not found');
+  }
+
+  // Common check for user data before creating ToBeShipped entry
+  if ((status === 'accepted' || status === 'approved') && (!order.user || !order.user._id || !order.shippingAddress)) {
+    res.status(500);
+    throw new Error(`Order user ID (${order.user?._id}), or shipping address data missing for shipment transfer.`);
   }
 
   if (status === 'accepted') {
@@ -228,22 +234,23 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       throw new Error('Order is already marked for shipment.');
     }
 
-    if (!order.user || !order.shippingAddress) {
-      res.status(500);
-      throw new Error('Order user or shipping address data missing for shipment transfer.');
-    }
-
     try {
       const toBeShippedEntry = await ToBeShipped.create({
         orderId: order._id,
-        customerName: order.user.name || 'N/A',
+        user: order.user._id,
+        customerName: order.user.name || order.shippingAddress.fullName || 'N/A',
         mobileNumber: order.shippingAddress.phone,
         address: order.shippingAddress.address,
         city: order.shippingAddress.city,
         postalCode: order.shippingAddress.postalCode,
-        email: order.user.email,
+        email: order.user.email || order.shippingAddress.email,
         paymentStatus: order.paymentStatus,
         status: 'accepted',
+        // --- ADD THESE NEW FIELDS FROM THE ORIGINAL ORDER ---
+        orderNumber: order.orderNumber, // Crucial for display
+        totalPrice: order.totalPrice,   // Crucial for display
+        paymentMethod: order.paymentMethod, // Crucial for display
+        // --- END ADDITION ---
       });
 
       // Delete the order from OrderList after moving to ToBeShipped
@@ -267,21 +274,23 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       throw new Error('Order is already marked for shipment.');
     }
 
-    if (!order.user || !order.shippingAddress) {
-      res.status(500);
-      throw new Error('Order user or shipping address data missing for shipment transfer.');
-    }
-
     try {
       const toBeShippedEntry = await ToBeShipped.create({
         orderId: order._id,
-        customerName: order.user.name || 'N/A',
+        user: order.user._id,
+        customerName: order.user.name || order.shippingAddress.fullName || 'N/A',
         mobileNumber: order.shippingAddress.phone,
         address: order.shippingAddress.address,
         city: order.shippingAddress.city,
         postalCode: order.shippingAddress.postalCode,
-        email: order.user.email,
+        email: order.user.email || order.shippingAddress.email,
         paymentStatus: order.paymentStatus,
+        status: 'approved', // Or whatever specific status you want for 'approved' in ToBeShipped
+        // --- ADD THESE NEW FIELDS FROM THE ORIGINAL ORDER ---
+        orderNumber: order.orderNumber, // Crucial for display
+        totalPrice: order.totalPrice,   // Crucial for display
+        paymentMethod: order.paymentMethod, // Crucial for display
+        // --- END ADDITION ---
       });
 
       await Order.findByIdAndDelete(req.params.id);
@@ -297,6 +306,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       throw new Error('Error processing order approval and transfer: ' + error.message);
     }
   } else {
+    // Other status updates (pending, declined, denied, shipped, delivered)
     order.status = status;
     await order.save();
 
@@ -355,13 +365,16 @@ export const getMyOrders = asyncHandler(async (req, res) => {
   res.status(200).json(orders);
 });
 
-// @desc    Get orders from 'ToBeShipped' collection
-// @route   GET /api/orders/tobeshipped
+// @desc    Get orders from 'ToBeShipped' collection (Admin)
+// @route   GET /api/tobeshipped/list (Moved to toBeShippedRoutes)
 // @access  Private/Admin
+// NOTE: This function is still here but its route definition has moved to toBeShippedRoutes.js
+// If this function is ONLY used by the route in toBeShippedRoutes.js, then it doesn't need to be exported
+// from here or even exist here if the logic is directly in the route handler.
 export const getToBeShippedOrders = asyncHandler(async (req, res) => {
   try {
     console.log('=== FETCHING TO BE SHIPPED ORDERS ===');
-    
+
     const toBeShippedOrders = await ToBeShipped.find()
       .populate({
         path: 'orderId',
@@ -374,6 +387,7 @@ export const getToBeShippedOrders = asyncHandler(async (req, res) => {
       console.log(`Order ${index + 1}:`, {
         id: order._id,
         customerName: order.customerName,
+        // These will be undefined if order.orderId is null/undefined
         orderNumber: order.orderId?.orderNumber,
         totalPrice: order.orderId?.totalPrice,
         paymentStatus: order.paymentStatus
@@ -418,7 +432,7 @@ export const testBankTransferOrder = asyncHandler(async (req, res) => {
     console.log('Creating test order with data:', testOrderData);
 
     const order = await Order.create(testOrderData);
-    
+
     const populatedOrder = await Order.findById(order._id)
       .populate('user', 'name email')
       .populate('orderItems.product');

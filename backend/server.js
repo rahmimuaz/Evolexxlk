@@ -4,22 +4,23 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import upload from './middleware/upload.js'; // Cloudinary-based multer
 
-// Import product controller functions (no routes imported here)
-import {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  getProductsByCategory,
-} from './controllers/productController.js';
+// Import product controller functions (no routes imported here) - This block can likely be removed if you're using productRoutes
+// import {
+//   getProducts,
+//   getProduct,
+//   createProduct,
+//   updateProduct,
+//   deleteProduct,
+//   getProductsByCategory,
+// } from './controllers/productController.js';
 
+// Import your route files
 import orderRoutes from './routes/orderRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
-import ToBeShipped from './models/ToBeShipped.js';
 import productRoutes from './routes/productRoutes.js';
+import toBeShippedRoutes from './routes/toBeShippedRoutes.js'; // <--- NEW: Import the ToBeShipped routes
 
 dotenv.config();
 
@@ -36,10 +37,10 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // To parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // To parse URL-encoded request bodies
 
-// Serve static files from uploads directory
+// Serve static files from uploads directory (if you store uploads locally)
 app.use('/uploads', express.static('uploads'));
 
 // MongoDB Connection
@@ -50,44 +51,34 @@ mongoose.connect(process.env.MONGODB_URI)
     process.exit(1);
   });
 
-// Product Routes (use router, not direct controller functions)
-app.use('/api/products', productRoutes);
-
 // Use routers for modular routes
+app.use('/api/products', productRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/tobeshipped', toBeShippedRoutes); // <--- NEW: Use the ToBeShipped routes under '/api/tobeshipped'
 
-// ToBeShipped route (moved from orderRoutes to prevent conflicts)
-app.get('/api/orders/tobeshipped/list', async (req, res) => {
-  try {
-    const list = await ToBeShipped.find().sort({ createdAt: -1 });
-    res.status(200).json(list);
-  } catch (error) {
-    console.error('Error fetching to-be-shipped list:', error);
-    res.status(500).json({ message: 'Error fetching to-be-shipped list' });
-  }
-});
 
-// Test Cloudinary endpoint
+
+// Test Cloudinary endpoint (keep this if you use Cloudinary)
 app.get('/api/test-cloudinary', async (req, res) => {
   try {
-    const cloudinary = (await import('./config/cloudinary.js')).default;
+    const cloudinary = (await import('./config/cloudinary.js')).default; // Adjust path as needed
     const result = await cloudinary.api.ping();
-    res.json({ 
+    res.json({
       message: 'Cloudinary connection successful',
       result: result
     });
   } catch (error) {
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Cloudinary connection failed',
-      error: error.message 
+      error: error.message
     });
   }
 });
 
-// Error handling middleware
+// Error handling middleware (should be last before 404 handler)
 app.use((err, req, res, next) => {
   console.error('Error details:', {
     name: err.name,
@@ -95,8 +86,8 @@ app.use((err, req, res, next) => {
     code: err.code,
     stack: err.stack
   });
-  
-  // Handle multer errors
+
+  // Handle specific errors for better client feedback
   if (err.name === 'MulterError') {
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({ message: 'File too large. Maximum size is 5MB.' });
@@ -107,29 +98,26 @@ app.use((err, req, res, next) => {
     if (err.code === 'LIMIT_UNEXPECTED_FILE') {
       return res.status(400).json({ message: 'Unexpected file field.' });
     }
-    if (err.code === 'LIMIT_FILE_COUNT') {
-      return res.status(400).json({ message: 'Too many files uploaded.' });
-    }
     return res.status(400).json({ message: 'File upload error: ' + err.message });
   }
-  
-  // Handle validation errors
-  if (err.name === 'ValidationError') {
+
+  if (err.name === 'ValidationError') { // Mongoose validation errors
     return res.status(400).json({ message: 'Validation error: ' + err.message });
   }
-  
-  // Handle file validation errors
+
+  // Custom file validation errors
   if (err.message && err.message.includes('Only image and PDF files are allowed')) {
     return res.status(400).json({ message: err.message });
   }
-  
+
+  // Generic internal server error
   res.status(500).json({
     message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined // Only show full error in development
   });
 });
 
-// 404 handler (if no route matched)
+// 404 handler (if no route matched - should be after all other routes and middleware)
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
