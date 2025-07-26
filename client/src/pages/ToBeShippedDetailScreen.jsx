@@ -194,7 +194,7 @@ const ToBeShippedDetailScreen = () => {
                             <img
                               src={getImageUrl(item.image)}
                               alt={item.name}
-                              className="product-image-sm"
+                              className="product-image"
                               onError={handleImageError}
                             />
                             <div className="product-image-placeholder-small" style={{ display: 'none' }}>
