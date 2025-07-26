@@ -671,11 +671,7 @@
         font-size: 0.9rem;
         padding: 0.6rem 0.8rem;
     }
-    .order-table {
-        /* Consider making table cells display as block on very small screens,
-           or using a library like react-table for better mobile tables.
-           For now, rely on overflow-x-auto on parent for horizontal scroll. */
-    }
+   
     .modal-content {
         padding: 1.5rem;
     }
