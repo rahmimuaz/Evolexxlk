@@ -29,35 +29,35 @@ const MyOrders = () => {
     fetchOrders();
   }, [user]);
 
-  if (!user) return <div style={{ padding: 32 }}>Please log in to view your orders.</div>;
-  if (loading) return <div style={{ padding: 32 }}>Loading your orders...</div>;
-  if (error) return <div style={{ padding: 32, color: 'red' }}>{error}</div>;
+  if (!user) return <div className="orders-message">Please log in to view your orders.</div>;
+  if (loading) return <div className="orders-message">Loading your orders...</div>;
+  if (error) return <div className="orders-message error">{error}</div>;
 
   return (
-    <div style={{ maxWidth: 900, margin: '32px auto', padding: 16 }}>
-      <h2 style={{ marginBottom: 24 }}>My Orders</h2>
+    <div className="orders-container">
+      <h2 className="orders-heading">My Orders</h2>
       {orders.length === 0 ? (
         <div>No orders found.</div>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table className="orders-table">
           <thead>
-            <tr style={{ background: '#f5f5f5' }}>
-              <th style={{ padding: 8, border: '1px solid #ddd' }}>Order #</th>
-              <th style={{ padding: 8, border: '1px solid #ddd' }}>Date</th>
-              <th style={{ padding: 8, border: '1px solid #ddd' }}>Total</th>
-              <th style={{ padding: 8, border: '1px solid #ddd' }}>Status</th>
-              <th style={{ padding: 8, border: '1px solid #ddd' }}>Details</th>
+            <tr>
+              <th>Order #</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(order => (
               <tr key={order._id}>
-                <td style={{ padding: 8, border: '1px solid #ddd' }}>{order.orderNumber || order._id}</td>
-                <td style={{ padding: 8, border: '1px solid #ddd' }}>{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}</td>
-                <td style={{ padding: 8, border: '1px solid #ddd' }}>Rs. {order.totalPrice?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</td>
-                <td style={{ padding: 8, border: '1px solid #ddd' }}>{order.status || order.paymentStatus || 'N/A'}</td>
-                <td style={{ padding: 8, border: '1px solid #ddd' }}>
-                <Link to={`/order/${order._id}`}>View</Link>
+                <td>{order.orderNumber || order._id}</td>
+                <td>{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}</td>
+                <td>Rs. {order.totalPrice?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</td>
+                <td>{order.status || order.paymentStatus || 'N/A'}</td>
+                <td>
+                  <Link to={`/order/${order._id}`}>View</Link>
                 </td>
               </tr>
             ))}
@@ -68,4 +68,4 @@ const MyOrders = () => {
   );
 };
 
-export default MyOrders; 
+export default MyOrders;

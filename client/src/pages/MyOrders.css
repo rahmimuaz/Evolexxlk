@@ -1,125 +1,105 @@
-/* src/pages/MyOrders/MyOrders.css */
+.orders-container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
-.my-orders-container {
-    margin: 32px auto;
-    padding: 16px;
-    background-color: #fff;
+.orders-heading {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
+
+.orders-message {
+  padding: 32px;
+  text-align: center;
+  font-size: 16px;
+  color: #444;
+}
+
+.orders-message.error {
+  color: #e63946;
+  font-weight: bold;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  background-color: #fff;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.orders-table thead {
+  background-color: #f5f5f5;
+}
+
+.orders-table th {
+  font-weight: 600;
+  color: #555;
+}
+
+.orders-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.orders-table td a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.orders-table td a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 12px;
+  }
+
+  .orders-table,
+  .orders-table thead,
+  .orders-table tbody,
+  .orders-table th,
+  .orders-table td,
+  .orders-table tr {
+    display: block;
+  }
+
+  .orders-table thead tr {
+    display: none;
+  }
+
+  .orders-table tr {
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+    padding: 12px;
   }
-  
-  .my-orders-container h2 {
-    font-size: 2em;
-    color: #333;
-    margin-bottom: 24px;
-    text-align: center;
+
+  .orders-table td {
+    padding: 8px 12px;
+    border: none;
+    position: relative;
   }
-  
-  .my-orders-container div {
-    text-align: center;
-    padding: 20px;
-    color: #555;
-    font-size: 1.1em;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  table thead tr {
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  table th {
-    padding: 12px 8px;
-    border: 1px solid #ddd;
-    text-align: left;
+
+  .orders-table td::before {
+    content: attr(data-label);
     font-weight: bold;
-    color: #333;
-  }
-  
-  table tbody tr {
-    border-bottom: 1px solid #eee;
-  }
-  
-  table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  table td {
-    padding: 12px 8px;
-    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: 4px;
     color: #666;
   }
-  
-  table td a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  table td a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .my-orders-container {
-      margin: 16px;
-      padding: 10px;
-    }
-  
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-  
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-  
-    tr {
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-  
-    td {
-      border: none;
-      border-bottom: 1px solid #eee;
-      position: relative;
-      padding-left: 50%;
-      text-align: right;
-    }
-  
-    td:last-child {
-      border-bottom: none;
-    }
-  
-    td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 10px;
-      width: calc(50% - 20px);
-      padding-right: 10px;
-      white-space: nowrap;
-      text-align: left;
-      font-weight: bold;
-      color: #333;
-    }
-  }
-  
-  /* Specific labels for mobile view */
-  /* You need to add data-label attributes to your <td> elements in MyOrders.jsx
-     For example: <td data-label="Order #">{order.orderNumber || order._id}</td>
-  */
+}
