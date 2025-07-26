@@ -647,8 +647,9 @@ const OrderList = () => {
                               <div className="proof-container">
                                 {order.bankTransferProof.match(/\.(jpg|jpeg|png|gif|webp)$/i) && (
                                   <div className="proof-image-preview">
+                                    {/* UPDATED: Use order.bankTransferProof directly for Cloudinary images */}
                                     <img
-                                      src={`${API_BASE_URL}/${order.bankTransferProof.replace(/^\//, '')}`} // Use API_BASE_URL
+                                      src={order.bankTransferProof}
                                       alt="Bank Transfer Proof"
                                       className="proof-thumbnail"
                                       onError={(e) => {
@@ -661,18 +662,20 @@ const OrderList = () => {
                                     </div>
                                   </div>
                                 )}
+                                {/* UPDATED: Use order.bankTransferProof directly for Cloudinary links */}
                                 <a
-                                  href={`${API_BASE_URL}/${order.bankTransferProof.replace(/^\//, '')}`} // Use API_BASE_URL
+                                  href={order.bankTransferProof}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="proof-link"
                                   title="View/Download Proof"
                                   onClick={async (e) => {
                                     try {
-                                      const res = await fetch(`${API_BASE_URL}/${order.bankTransferProof.replace(/^\//, '')}`, { method: 'HEAD' });
+                                      // Check if the Cloudinary URL is accessible (optional but good practice)
+                                      const res = await fetch(order.bankTransferProof, { method: 'HEAD' });
                                       if (!res.ok) {
                                         e.preventDefault();
-                                        alert('Proof file not accessible. It might have been moved or deleted.');
+                                        alert('Proof file not accessible. It might have been moved or deleted from Cloudinary.');
                                       }
                                     } catch (err) {
                                       console.error('Error checking proof URL:', err);
@@ -686,8 +689,9 @@ const OrderList = () => {
                                   </svg>
                                   {order.bankTransferProof.match(/\.pdf$/i) ? 'View PDF' : 'View Proof'}
                                 </a>
+                                {/* UPDATED: Use order.bankTransferProof directly for Cloudinary download links */}
                                 <a
-                                  href={`${API_BASE_URL}/${order.bankTransferProof.replace(/^\//, '')}`} // Use API_BASE_URL
+                                  href={order.bankTransferProof}
                                   download
                                   className="proof-download-link"
                                   title="Download File"
@@ -698,11 +702,10 @@ const OrderList = () => {
                                   Download
                                 </a>
                               </div>
-                            ) : order.paymentMethod === 'bank_transfer' ? (
-                              <span className="text-gray-500 text-xs">No proof uploaded</span>
                             ) : (
-                              <span className="text-gray-400">N/A</span>
-                            )}
+                               // This part will now correctly display if there's no proof or if payment method isn't bank transfer
+                               order.paymentMethod === 'bank_transfer' ? 'No proof uploaded.' : 'Not applicable'
+                             )}
                           </div>
                         </div>
                       </td>
@@ -716,23 +719,13 @@ const OrderList = () => {
       )}
 
       {showDeleteModal && (
-        <div className="delete-modal-overlay">
-          <div className="delete-modal-content">
-            <h3 className="delete-modal-title">Confirm Deletion</h3>
-            <p className="delete-modal-message">Are you sure you want to delete this order? This action cannot be undone.</p>
-            <div className="delete-modal-actions">
-              <button
-                onClick={confirmDelete}
-                className="delete-modal-button-confirm"
-              >
-                Delete
-              </button>
-              <button
-                onClick={cancelDelete}
-                className="delete-modal-button-cancel"
-              >
-                Cancel
-              </button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this order? This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button onClick={confirmDelete} className="button-danger">Delete</button>
+              <button onClick={cancelDelete} className="button-secondary">Cancel</button>
             </div>
           </div>
         </div>

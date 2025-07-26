@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+// REMOVE THIS DUPLICATE LINE: import jsPDF from 'jspdf';
+import 'jspdf-autotable'; // Keep this one!
+
+// ** CORRECT IMPORT FOR jsPDF **
+import { jsPDF } from 'jspdf'; // Use named import for consistency and common practice
+
+
 import './ToBeShippedList.css'; // Assuming you have a CSS file for styling
 
 // Import the image utility function (or copy it from OrderDetails.jsx)
@@ -61,6 +66,7 @@ const ToBeShippedList = () => {
   }, [token, API_BASE_URL]);
 
   const downloadPdf = (order) => {
+    // This is where `autoTable` is called, so `jspdf-autotable` needs to have been imported before this line
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text(`Shipping Label - Order #${order.orderNumber || 'N/A'}`, 10, 15);
@@ -100,7 +106,8 @@ const ToBeShippedList = () => {
 
     yPos += 15;
     doc.text('Order Items:', 10, yPos);
-    yPos += 7;
+    // Remove yPos += 7 here if autoTable is going to manage its own starting position based on yPos
+    // The autoTable startY option will usually move it to the correct spot.
 
     const tableColumn = ["Product", "Qty", "Price"];
     const tableRows = [];
@@ -114,7 +121,33 @@ const ToBeShippedList = () => {
       tableRows.push(itemData);
     });
 
-    doc.autoTable(tableColumn, tableRows, { startY: yPos });
+    // doc.autoTable(tableColumn, tableRows, { startY: yPos });
+    // Use the object syntax for autoTable for better readability and features
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: yPos, // Start table at the calculated yPos
+      theme: 'grid', // Choose a theme, e.g., 'striped', 'grid', 'plain'
+      styles: {
+        fontSize: 8,
+        cellPadding: 2,
+        valign: 'middle',
+      },
+      headStyles: {
+        fillColor: [52, 73, 94], // Dark blue header
+        textColor: 255,
+        fontStyle: 'bold',
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245], // Light gray for alternate rows
+      },
+      columnStyles: {
+        0: { cellWidth: 'auto' }, // Product column width auto
+        1: { cellWidth: 20, halign: 'center' }, // Qty column fixed width, center align
+        2: { cellWidth: 30, halign: 'right' }, // Price column fixed width, right align
+      }
+    });
+
 
     doc.save(`Shipping_Label_Order_${order.orderNumber || 'Unknown'}.pdf`);
   };
@@ -270,7 +303,7 @@ const ToBeShippedList = () => {
                                 ) : (
                                   <div className="product-image-placeholder-small">
                                     <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                   </div>
                                 )}
