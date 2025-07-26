@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-// REMOVE THIS DUPLICATE LINE: import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // Keep this one!
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import './ToBeShippedList.css'; // ALL IMPORTS MUST BE AT THE TOP
 
-// ** CORRECT IMPORT FOR jsPDF **
-import { jsPDF } from 'jspdf'; // Use named import for consistency and common practice
+// Place any non-import statements AFTER all imports.
+// This workaround for jsPDF-autotable's global dependency.
+if (typeof window !== 'undefined' && !window.jsPDF) {
+  window.jsPDF = jsPDF;
+}
 
-
-import './ToBeShippedList.css'; // Assuming you have a CSS file for styling
-
-// Import the image utility function (or copy it from OrderDetails.jsx)
 const getImageUrl = (imagePath) => {
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
   if (!imagePath) return '';
@@ -24,7 +24,7 @@ const ToBeShippedList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [expandedOrders, setExpandedOrders] = useState({}); // State for expanding rows
+  const [expandedOrders, setExpandedOrders] = useState({});
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
@@ -66,8 +66,8 @@ const ToBeShippedList = () => {
   }, [token, API_BASE_URL]);
 
   const downloadPdf = (order) => {
-    // This is where `autoTable` is called, so `jspdf-autotable` needs to have been imported before this line
     const doc = new jsPDF();
+
     doc.setFontSize(16);
     doc.text(`Shipping Label - Order #${order.orderNumber || 'N/A'}`, 10, 15);
     doc.setFontSize(12);
@@ -98,7 +98,7 @@ const ToBeShippedList = () => {
     yPos += 7;
     doc.text(`  Order Number: ${order.orderNumber || 'N/A'}`, 10, yPos);
     yPos += 7;
-    doc.text(`  Total Price: Rs. ${order.totalPrice?.toLocaleString('en-LK', { minimumFractionDigits: 2 }) || 'N/A'}`, 10, yPos); // Corrected currency format
+    doc.text(`  Total Price: Rs. ${order.totalPrice?.toLocaleString('en-LK', { minimumFractionDigits: 2 }) || 'N/A'}`, 10, yPos);
     yPos += 7;
     doc.text(`  Payment Method: ${order.paymentMethod || 'N/A'}`, 10, yPos);
     yPos += 7;
@@ -106,8 +106,6 @@ const ToBeShippedList = () => {
 
     yPos += 15;
     doc.text('Order Items:', 10, yPos);
-    // Remove yPos += 7 here if autoTable is going to manage its own starting position based on yPos
-    // The autoTable startY option will usually move it to the correct spot.
 
     const tableColumn = ["Product", "Qty", "Price"];
     const tableRows = [];
@@ -121,33 +119,30 @@ const ToBeShippedList = () => {
       tableRows.push(itemData);
     });
 
-    // doc.autoTable(tableColumn, tableRows, { startY: yPos });
-    // Use the object syntax for autoTable for better readability and features
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: yPos, // Start table at the calculated yPos
-      theme: 'grid', // Choose a theme, e.g., 'striped', 'grid', 'plain'
+      startY: yPos,
+      theme: 'grid',
       styles: {
         fontSize: 8,
         cellPadding: 2,
         valign: 'middle',
       },
       headStyles: {
-        fillColor: [52, 73, 94], // Dark blue header
+        fillColor: [52, 73, 94],
         textColor: 255,
         fontStyle: 'bold',
       },
       alternateRowStyles: {
-        fillColor: [245, 245, 245], // Light gray for alternate rows
+        fillColor: [245, 245, 245],
       },
       columnStyles: {
-        0: { cellWidth: 'auto' }, // Product column width auto
-        1: { cellWidth: 20, halign: 'center' }, // Qty column fixed width, center align
-        2: { cellWidth: 30, halign: 'right' }, // Price column fixed width, right align
+        0: { cellWidth: 'auto' },
+        1: { cellWidth: 20, halign: 'center' },
+        2: { cellWidth: 30, halign: 'right' },
       }
     });
-
 
     doc.save(`Shipping_Label_Order_${order.orderNumber || 'Unknown'}.pdf`);
   };
@@ -168,12 +163,10 @@ const ToBeShippedList = () => {
     }));
   };
 
-  // Image error handler for product images
   const handleImageError = (e) => {
-    e.target.style.display = 'none'; // Hide the broken image
-    e.target.nextSibling.style.display = 'flex'; // Show the placeholder
+    e.target.classList.add('hidden-image');
+    e.target.nextElementSibling.classList.remove('hidden-placeholder');
   };
-
 
   if (loading) {
     return (
@@ -206,34 +199,16 @@ const ToBeShippedList = () => {
         <div className="shipped-table-wrapper">
           <table className="shipped-table">
             <thead>
-              <tr>
-                <th className="shipped-table th">Order ID</th>
-                <th className="shipped-table th">Customer</th>
-                <th className="shipped-table th">Mobile</th>
-                <th className="shipped-table th">Email</th>
-                <th className="shipped-table th">Address</th>
-                <th className="shipped-table th">Status</th>
-                <th className="shipped-table th">Total Price</th>
-                <th className="shipped-table th">Actions</th>
-                <th className="shipped-table th"></th> {/* For expand button */}
-              </tr>
+              <tr><th className="shipped-table th">Order ID</th><th className="shipped-table th">Customer</th><th className="shipped-table th">Mobile</th><th className="shipped-table th">Email</th><th className="shipped-table th">Address</th><th className="shipped-table th">Status</th><th className="shipped-table th">Total Price</th><th className="shipped-table th">Actions</th><th className="shipped-table th"></th></tr>
             </thead>
             <tbody>
               {orders.map((order) => (
                 <React.Fragment key={order._id}>
                   <tr className="hover:bg-gray-100 transition-colors duration-150">
-                    <td className="shipped-table td order-id-cell">
-                      {order.orderNumber || 'N/A'}
-                    </td>
-                    <td className="shipped-table td">
-                      {order.customerName || 'N/A'}
-                    </td>
-                    <td className="shipped-table td">
-                      {order.mobileNumber || 'N/A'}
-                    </td>
-                    <td className="shipped-table td">
-                      {order.email || 'N/A'}
-                    </td>
+                    <td className="shipped-table td order-id-cell">{order.orderNumber || 'N/A'}</td>
+                    <td className="shipped-table td">{order.customerName || 'N/A'}</td>
+                    <td className="shipped-table td">{order.mobileNumber || 'N/A'}</td>
+                    <td className="shipped-table td">{order.email || 'N/A'}</td>
                     <td className="shipped-table td">
                       <div className="address-display">
                         <p className="address-line">{order.address}</p>
@@ -256,7 +231,7 @@ const ToBeShippedList = () => {
                           title="Download Shipping Label"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 2 0 01.707.293l5.414 5.414a1 2 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                           Download PDF
                         </button>
@@ -294,7 +269,7 @@ const ToBeShippedList = () => {
                                       className="product-thumbnail"
                                       onError={handleImageError}
                                     />
-                                    <div className="product-image-placeholder-small" style={{ display: 'none' }}>
+                                    <div className="product-image-placeholder-small hidden-placeholder">
                                       <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                       </svg>
