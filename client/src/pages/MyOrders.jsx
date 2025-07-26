@@ -14,28 +14,40 @@ const MyOrders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
       try {
-        setLoading(true); // Set loading to true before fetching
+        setLoading(true);
+
+        const pendingOrdersPromise = axios.get(`${API_BASE_URL}/api/orders/myorders`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+
+        const shippedOrdersPromise = axios.get(`${API_BASE_URL}/api/tobeshipped/myorders`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+
         const [pendingOrdersRes, shippedOrdersRes] = await Promise.all([
-          axios.get(`${API_BASE_URL}/api/orders/myorders`, { // Assuming this fetches user's pending orders
-            headers: { Authorization: `Bearer ${user.token}` }
-          }),
-          axios.get(`${API_BASE_URL}/api/tobeshipped/myorders`, { // **NEW ENDPOINT for TobeShipped orders**
-            headers: { Authorization: `Bearer ${user.token}` }
-          })
+          pendingOrdersPromise,
+          shippedOrdersPromise
         ]);
 
-        // Combine the results from both schemas
-        const combinedOrders = [...pendingOrdersRes.data, ...shippedOrdersRes.data];
+        // Add a 'type' identifier to each order to distinguish them
+        const pendingOrders = pendingOrdersRes.data.map(order => ({ ...order, type: 'Order' }));
+        const shippedOrders = shippedOrdersRes.data.map(order => ({ ...order, type: 'ToBeShipped' }));
 
-        // Sort orders by creation date (most recent first) for better display
+        const combinedOrders = [...pendingOrders, ...shippedOrders];
+
+        // Sort orders by creation date (most recent first)
         combinedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+        console.log('Combined orders for MyOrders:', combinedOrders); // Debugging
         setOrders(combinedOrders);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching orders:', err);
+        console.error('Error fetching orders:', err.message || err);
         setError('Failed to fetch orders. Please try again.');
         setLoading(false);
       }
@@ -66,12 +78,24 @@ const MyOrders = () => {
           <tbody>
             {orders.map(order => (
               <tr key={order._id}>
-                <td>{order.orderNumber || order._id}</td>
+                {/* Display order number directly for both types now */}
+                <td>{order.orderNumber || 'N/A'}</td>
                 <td>{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}</td>
                 <td>Rs. {order.totalPrice?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</td>
-                <td>{order.status || order.paymentStatus || 'N/A'}</td>
+                <td>{order.status || 'N/A'}</td>
                 <td>
-                  <Link to={`/order/${order._id}`}>View</Link>
+                  {/* CRITICAL CHANGE HERE: Link to different routes based on type */}
+                  {order.type === 'Order' ? (
+                    <Link to={`/order/${order._id}`}>View Details</Link>
+                  ) : order.type === 'ToBeShipped' ? (
+                    // You need a new detail page for ToBeShipped orders,
+                    // or modify your existing order detail page to handle ToBeShipped data.
+                    // For now, let's link to a placeholder or directly use the ToBeShipped ID
+                    // This implies creating a /tobeshipped/order/:id route and component.
+                    <Link to={`/tobeshipped/order/${order._id}`}>View Shipment</Link>
+                  ) : (
+                    'N/A'
+                  )}
                 </td>
               </tr>
             ))}

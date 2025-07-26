@@ -22,6 +22,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import toBeShippedRoutes from './routes/toBeShippedRoutes.js'; // <--- NEW: Import the ToBeShipped routes
 
+
 dotenv.config();
 
 // Check for required environment variables
@@ -58,6 +59,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/tobeshipped', toBeShippedRoutes); // <--- NEW: Use the ToBeShipped routes under '/api/tobeshipped'
+
 
 
 

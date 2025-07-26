@@ -17,6 +17,7 @@ import Homepage from './pages/Home/Homepage';
 import Footer from './components/Footer/Footer';
 import CategoryPage from './pages/Category/CategoryPage';
 import MyOrders from './pages/MyOrders'; // Import MyOrders
+import ToBeShippedDetailScreen from './pages/ToBeShippedDetailScreen';
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
                 <Route path="/homepage" element={<Homepage />} /> {/* Duplicate route, consider removing */}
                 <Route path="/footer" element={<Footer/>} /> {/* This usually isn't a separate route */}
                 <Route path="/my-orders" element={<MyOrders />} /> {/* This is the correct addition! */}
+                <Route path="/tobeshipped/order/:id" element={<ToBeShippedDetailScreen />} />
+                
               </Routes>
             {/* Consider placing Footer here if it should appear on all pages */}
             {/* <Footer /> */}
