@@ -78,24 +78,19 @@ const addToCart = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  // Check if product already exists in cart
-  const existingCartItem = user.cart.find(item => 
-    item.product.toString() === productId
+  const existingCartItem = user.cart.find(
+    (item) => item.product.toString() === productId
   );
 
   if (existingCartItem) {
-    // Update quantity if product already in cart
     existingCartItem.quantity += quantity;
   } else {
-    // Add new item to cart
     user.cart.push({ product: productId, quantity });
   }
 
   await user.save();
 
-  // Populate product details for response
   const populatedUser = await User.findById(user._id).populate('cart.product');
-  
   res.status(200).json(populatedUser.cart);
 });
 
@@ -108,7 +103,9 @@ const updateCartItemQuantity = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    const itemToUpdate = user.cart.find(item => item.product.toString() === productId);
+    const itemToUpdate = user.cart.find(
+      (item) => item.product.toString() === productId
+    );
 
     if (itemToUpdate) {
       itemToUpdate.quantity = quantity;
@@ -135,7 +132,7 @@ const removeFromUserCart = asyncHandler(async (req, res) => {
 
   if (user) {
     const initialCartLength = user.cart.length;
-    user.cart = user.cart.filter(item => item.product.toString() !== productId);
+    user.cart = user.cart.filter((item) => item.product.toString() !== productId);
 
     if (user.cart.length === initialCartLength) {
       res.status(404);
@@ -182,6 +179,9 @@ const clearUserCart = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Cart cleared successfully' });
 });
 
+// @desc    Google login
+// @route   POST /api/users/google-login
+// @access  Public
 export const googleLogin = async (req, res) => {
   const { token } = req.body;
   try {
@@ -198,7 +198,7 @@ export const googleLogin = async (req, res) => {
         name,
         email,
         googleId: sub,
-        password: Math.random().toString(36), // random password, not used
+        password: Math.random().toString(36),
       });
     }
 
@@ -222,21 +222,45 @@ export const getAllUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
-// @desc    Delete a user (Admin)
+// @desc    Delete a user and their reviews (Admin)
 // @route   DELETE /api/admin/users/:id
 // @access  Private/Admin
 export const deleteUser = asyncHandler(async (req, res) => {
-  try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) {
-      res.status(404);
-      throw new Error('User not found');
-    }
-    res.status(200).json({ message: 'User removed' });
-  } catch (error) {
-    res.status(500);
-    throw new Error(error.message || 'Something went wrong while deleting user');
+  const userId = req.params.id;
+
+  // Step 1: Delete the user
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
   }
+
+  // Step 2: Remove this user's reviews from all products
+  const products = await Product.find({ 'reviews.user': userId });
+
+  for (const product of products) {
+    product.reviews = product.reviews.filter(
+      (r) => r.user.toString() !== userId.toString()
+    );
+
+    product.numReviews = product.reviews.length;
+    product.rating =
+      product.numReviews > 0
+        ? product.reviews.reduce((acc, r) => acc + r.rating, 0) / product.numReviews
+        : 0;
+
+    await product.save();
+  }
+
+  res.status(200).json({ message: 'User and associated reviews deleted successfully' });
 });
 
-export { authUser, registerUser, addToCart, updateCartItemQuantity, removeFromUserCart, getUserCart, clearUserCart }; 
+export {
+  authUser,
+  registerUser,
+  addToCart,
+  updateCartItemQuantity,
+  removeFromUserCart,
+  getUserCart,
+  clearUserCart,
+};
