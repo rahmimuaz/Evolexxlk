@@ -1,5 +1,5 @@
 import Order from '../models/Order.js';
-import User from '../models/userModel.js'; // Assuming userModel.js contains your User model
+import User from '../models/userModel.js';
 import ToBeShipped from '../models/ToBeShipped.js'; // Import the ToBeShipped model
 import Product from '../models/Product.js';
 
@@ -12,7 +12,7 @@ import { sendEmail } from '../utils/sendEmail.js';
 export const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find()
     .populate('user', 'name email')
-    .populate('orderItems.product')
+    .populate('orderItems.product') // Ensure product details are populated
     .sort({ createdAt: -1 });
 
   // Debug: Log order details
@@ -23,8 +23,14 @@ export const getOrders = asyncHandler(async (req, res) => {
       paymentMethod: order.paymentMethod,
       bankTransferProof: order.bankTransferProof,
       hasProof: !!order.bankTransferProof,
-      createdAt: order.createdAt
+      createdAt: order.createdAt,
+      itemsCount: order.orderItems ? order.orderItems.length : 0 // Add item count
     });
+    // Log details of the first item for debugging
+    if (order.orderItems && order.orderItems.length > 0) {
+      console.log(`  First Item Product Name: ${order.orderItems[0].product?.name}`);
+      console.log(`  First Item Product Image: ${order.orderItems[0].product?.images?.[0]}`);
+    }
   });
   console.log('=== END ORDERS DEBUG ===');
 
@@ -37,7 +43,7 @@ export const getOrders = asyncHandler(async (req, res) => {
 export const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
     .populate('user', 'name email')
-    .populate('orderItems.product');
+    .populate('orderItems.product'); // Ensure product details are populated
 
   if (!order) {
     res.status(404);
@@ -82,14 +88,29 @@ export const createOrder = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  // Use orderItems from request body if provided, otherwise use cart
   let finalOrderItems;
   let finalTotalPrice;
 
+  // Fetch product details for orderItems
   if (orderItems && orderItems.length > 0) {
-    finalOrderItems = orderItems;
-    finalTotalPrice = totalPrice || orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    console.log('Using orderItems from request body');
+    // For each item, fetch product details to ensure name, image, price, selectedColor are correct
+    finalOrderItems = await Promise.all(orderItems.map(async (item) => {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        res.status(400);
+        throw new Error(`Product not found: ${item.product}`);
+      }
+      return {
+        product: item.product,
+        quantity: item.quantity,
+        price: product.price, // Use actual product price from DB to prevent tampering
+        name: product.name, // Copy product name
+        image: product.images && product.images.length > 0 ? product.images[0] : '', // Copy main image
+        selectedColor: item.selectedColor || '' // Copy selected color if present
+      };
+    }));
+    finalTotalPrice = finalOrderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    console.log('Using orderItems from request body (with product details fetched)');
   } else {
     // Fallback to cart items
     const userWithCart = await User.findById(req.user._id).populate('cart.product');
@@ -102,9 +123,12 @@ export const createOrder = asyncHandler(async (req, res) => {
       product: item.product._id,
       quantity: item.quantity,
       price: item.product.price,
+      name: item.product.name, // Copy product name from populated cart item
+      image: item.product.images && item.product.images.length > 0 ? item.product.images[0] : '', // Copy main image
+      selectedColor: item.selectedColor || '' // Copy selected color if present in cart item
     }));
     finalTotalPrice = finalOrderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    console.log('Using cart items as fallback');
+    console.log('Using cart items as fallback (with product details from populated cart)');
   }
 
   // Inventory check and deduction
@@ -138,17 +162,15 @@ export const createOrder = asyncHandler(async (req, res) => {
   try {
     const orderNumber = await Order.generateOrderNumber(); // Assuming this is a static method on Order model
 
-    // Create order object with conditional bankTransferProof
     const orderData = {
       orderNumber,
       user: req.user._id,
-      orderItems: finalOrderItems,
+      orderItems: finalOrderItems, // Use the enriched finalOrderItems
       shippingAddress,
       paymentMethod,
       totalPrice: finalTotalPrice,
     };
 
-    // Only add bankTransferProof if it exists and payment method is bank_transfer
     if (bankTransferProof && paymentMethod === 'bank_transfer') {
       orderData.bankTransferProof = bankTransferProof;
       console.log('Adding bankTransferProof to order:', bankTransferProof);
@@ -166,7 +188,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 
     // Send new order email to admin
     await sendEmail(
-      process.env.ALERT_EMAIL_USER, // Ensure this ENV var is set for admin alerts
+      process.env.ALERT_EMAIL_USER,
       'New Order Received',
       `Evolexx Store\nNew Order Received\nA new order has been placed. Order ID: ${order._id}\n\nView Order: http://localhost:3000/admin/orders/${order._id}`
     );
@@ -178,8 +200,8 @@ export const createOrder = asyncHandler(async (req, res) => {
       `Thank you for your order at Evolexx Store!\n\nYour order has been received. Order ID: ${order._id}\n\nWe will notify you when your order is shipped.\n\nIf you have an account, you can view your order here: http://localhost:3000/orders/${order._id}`
     );
 
-    // Clear cart only if we used cart items
-    if (!orderItems || orderItems.length === 0) {
+    // Clear cart only if we used cart items (i.e., orderItems were not provided in request body)
+    if (!req.body.orderItems || req.body.orderItems.length === 0) {
       user.cart = [];
       await user.save();
     }
@@ -213,18 +235,24 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   }
 
   const order = await Order.findById(req.params.id)
-    .populate('user', 'name email') // This populates order.user correctly
-    .populate('orderItems.product');
+    .populate('user', 'name email')
+    .populate('orderItems.product'); // IMPORTANT: Populate product data for copying
 
   if (!order) {
     res.status(404);
     throw new Error('Order not found');
   }
 
+  if (order.status === status) {
+    res.status(400);
+    throw new Error(`Order is already ${status}`);
+  }
+
   // Common check for user data before creating ToBeShipped entry
-  if ((status === 'accepted' || status === 'approved') && (!order.user || !order.user._id || !order.shippingAddress)) {
+  if ((status === 'accepted' || status === 'approved' || status === 'shipped' || status === 'delivered') &&
+    (!order.user || !order.user._id || !order.shippingAddress || !order.orderItems || order.orderItems.length === 0)) {
     res.status(500);
-    throw new Error(`Order user ID (${order.user?._id}), or shipping address data missing for shipment transfer.`);
+    throw new Error(`Order user, shipping address, or order items data missing for shipment transfer.`);
   }
 
   if (status === 'accepted') {
@@ -235,22 +263,31 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     }
 
     try {
+      // Map order items to copy only necessary data to ToBeShipped
+      const copiedOrderItems = order.orderItems.map(item => ({
+        product: item.product._id, // Reference to the original Product ID
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.price, // Price from the order, not necessarily current product price
+        image: item.product.images && item.product.images.length > 0 ? item.product.images[0] : '',
+        selectedColor: item.selectedColor || '',
+      }));
+
       const toBeShippedEntry = await ToBeShipped.create({
         orderId: order._id,
         user: order.user._id,
-        customerName: order.user.name || order.shippingAddress.fullName || 'N/A',
+        orderNumber: order.orderNumber,
+        customerName: order.user.name || order.shippingAddress.fullName || 'N/A', // Prioritize user name, then shipping name
         mobileNumber: order.shippingAddress.phone,
         address: order.shippingAddress.address,
         city: order.shippingAddress.city,
         postalCode: order.shippingAddress.postalCode,
         email: order.user.email || order.shippingAddress.email,
+        paymentMethod: order.paymentMethod,
         paymentStatus: order.paymentStatus,
-        status: 'accepted',
-        // --- ADD THESE NEW FIELDS FROM THE ORIGINAL ORDER ---
-        orderNumber: order.orderNumber, // Crucial for display
-        totalPrice: order.totalPrice,   // Crucial for display
-        paymentMethod: order.paymentMethod, // Crucial for display
-        // --- END ADDITION ---
+        totalPrice: order.totalPrice,
+        status: 'accepted', // Initial status for ToBeShipped collection
+        orderItems: copiedOrderItems, // Store the copied order items
       });
 
       // Delete the order from OrderList after moving to ToBeShipped
@@ -266,8 +303,19 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error('Error processing order acceptance and transfer: ' + error.message);
     }
-  } else if (status === 'approved') {
-    // Keep the existing approved logic for backward compatibility
+  }
+  // If the status is 'approved' and you want to keep 'approved' as a separate flow
+  // (e.g., admin approval before 'accepted' which moves it to ToBeShipped),
+  // then you would define specific behavior here.
+  // Given your current `ToBeShippedList` logic uses 'accepted', 'shipped', 'delivered',
+  // it implies 'accepted' is the first status in the ToBeShipped lifecycle.
+  // If 'approved' also means moving to ToBeShipped, then the 'accepted' block above should handle it.
+  // For now, I'll remove the separate 'approved' block and assume 'accepted' is the one that moves it.
+  // If you need distinct 'approved' -> OrderList then 'accepted' -> ToBeShipped, let me know.
+  /*
+  else if (status === 'approved') {
+    // Current logic for 'approved' is same as 'accepted'
+    // This part might be redundant if 'accepted' is the actual trigger for ToBeShipped
     const existingToBeShipped = await ToBeShipped.findOne({ orderId: order._id });
     if (existingToBeShipped) {
       res.status(400);
@@ -275,22 +323,30 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     }
 
     try {
+      const copiedOrderItems = order.orderItems.map(item => ({
+        product: item.product._id,
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.price,
+        image: item.product.images && item.product.images.length > 0 ? item.product.images[0] : '',
+        selectedColor: item.selectedColor || '',
+      }));
+
       const toBeShippedEntry = await ToBeShipped.create({
         orderId: order._id,
         user: order.user._id,
+        orderNumber: order.orderNumber,
         customerName: order.user.name || order.shippingAddress.fullName || 'N/A',
         mobileNumber: order.shippingAddress.phone,
         address: order.shippingAddress.address,
         city: order.shippingAddress.city,
         postalCode: order.shippingAddress.postalCode,
         email: order.user.email || order.shippingAddress.email,
+        paymentMethod: order.paymentMethod,
         paymentStatus: order.paymentStatus,
-        status: 'approved', // Or whatever specific status you want for 'approved' in ToBeShipped
-        // --- ADD THESE NEW FIELDS FROM THE ORIGINAL ORDER ---
-        orderNumber: order.orderNumber, // Crucial for display
-        totalPrice: order.totalPrice,   // Crucial for display
-        paymentMethod: order.paymentMethod, // Crucial for display
-        // --- END ADDITION ---
+        totalPrice: order.totalPrice,
+        status: 'approved', // Or the correct initial status in ToBeShipped
+        orderItems: copiedOrderItems,
       });
 
       await Order.findByIdAndDelete(req.params.id);
@@ -305,10 +361,28 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error('Error processing order approval and transfer: ' + error.message);
     }
-  } else {
+  }
+  */
+  else {
     // Other status updates (pending, declined, denied, shipped, delivered)
     order.status = status;
     await order.save();
+
+    // If order is shipped or delivered, consider updating the ToBeShipped entry's status
+    // instead of deleting from Order. (Assuming order is *moved* from Order to ToBeShipped upon 'accepted')
+    // If you don't delete from Order, you would check for an existing ToBeShipped entry here:
+    if (status === 'shipped' || status === 'delivered') {
+      const existingToBeShipped = await ToBeShipped.findOne({ orderId: order._id });
+      if (existingToBeShipped) {
+        existingToBeShipped.status = status;
+        if (status === 'shipped') existingToBeShipped.shippedAt = new Date();
+        if (status === 'delivered') existingToBeShipped.deliveredAt = new Date();
+        await existingToBeShipped.save();
+        console.log(`ToBeShipped entry for order ${order._id} updated to status: ${status}`);
+      } else {
+        console.warn(`Attempted to update ToBeShipped status for order ${order._id} but no ToBeShipped entry found.`);
+      }
+    }
 
     const updatedOrder = await Order.findById(order._id)
       .populate('user', 'name email')
@@ -354,6 +428,11 @@ export const deleteOrder = asyncHandler(async (req, res) => {
     throw new Error('Order not found');
   }
 
+  // If you decide not to delete the Order from OrderList when accepted,
+  // but instead update its status to 'moved' or 'archived',
+  // then ensure you also delete the corresponding ToBeShipped entry if it exists.
+  await ToBeShipped.deleteOne({ orderId: req.params.id });
+
   res.status(200).json({ message: 'Order deleted successfully' });
 });
 
@@ -365,55 +444,35 @@ export const getMyOrders = asyncHandler(async (req, res) => {
   res.status(200).json(orders);
 });
 
-// @desc    Get orders from 'ToBeShipped' collection (Admin)
+// @desc    Get orders from 'ToBeShipped' collection (Admin) - **This function is now redundant as logic is in toBeShippedRoutes.js**
 // @route   GET /api/tobeshipped/list (Moved to toBeShippedRoutes)
 // @access  Private/Admin
-// NOTE: This function is still here but its route definition has moved to toBeShippedRoutes.js
-// If this function is ONLY used by the route in toBeShippedRoutes.js, then it doesn't need to be exported
-// from here or even exist here if the logic is directly in the route handler.
-export const getToBeShippedOrders = asyncHandler(async (req, res) => {
-  try {
-    console.log('=== FETCHING TO BE SHIPPED ORDERS ===');
-
-    const toBeShippedOrders = await ToBeShipped.find()
-      .populate({
-        path: 'orderId',
-        select: 'orderNumber totalPrice paymentMethod createdAt',
-      })
-      .sort({ createdAt: -1 });
-
-    console.log('Found to-be-shipped orders:', toBeShippedOrders.length);
-    toBeShippedOrders.forEach((order, index) => {
-      console.log(`Order ${index + 1}:`, {
-        id: order._id,
-        customerName: order.customerName,
-        // These will be undefined if order.orderId is null/undefined
-        orderNumber: order.orderId?.orderNumber,
-        totalPrice: order.orderId?.totalPrice,
-        paymentStatus: order.paymentStatus
-      });
-    });
-
-    res.status(200).json(toBeShippedOrders);
-  } catch (error) {
-    console.error('[getToBeShippedOrders] Error fetching to-be-shipped orders in controller:', error);
-    throw new Error('Failed to retrieve to-be-shipped orders: ' + error.message);
-  }
-});
+// export const getToBeShippedOrders = asyncHandler(async (req, res) => { /* ... */ });
 
 // @desc    Test route to create order with bank transfer proof
 // @route   POST /api/orders/test-bank-transfer
 // @access  Private/Admin
 export const testBankTransferOrder = asyncHandler(async (req, res) => {
   try {
+    const dummyProductId = '60c72b2f9f1b2c001c8e4d2a'; // **REPLACE with an actual product ID from your DB**
+    const product = await Product.findById(dummyProductId);
+
+    if (!product) {
+      res.status(400).json({ message: 'Dummy product not found. Please update dummyProductId in orderController.' });
+      return;
+    }
+
     const testOrderData = {
       orderNumber: await Order.generateOrderNumber(),
       user: req.user._id,
       orderItems: [
         {
-          product: '507f1f77bcf86cd799439011', // Dummy product ID
+          product: product._id,
           quantity: 1,
-          price: 100
+          price: product.price, // Use actual product price
+          name: product.name,
+          image: product.images && product.images.length > 0 ? product.images[0] : '',
+          selectedColor: 'Black' // Example color
         }
       ],
       shippingAddress: {
@@ -425,13 +484,16 @@ export const testBankTransferOrder = asyncHandler(async (req, res) => {
         phone: '1234567890'
       },
       paymentMethod: 'bank_transfer',
-      totalPrice: 100,
-      bankTransferProof: 'https://res.cloudinary.com/test/image/upload/test-proof.jpg'
+      totalPrice: product.price * 1, // Total price based on dummy product
+      bankTransferProof: 'https://res.cloudinary.com/djp0x1vbx/image/upload/v1700000000/sample_proof.jpg' // Example Cloudinary URL
     };
 
     console.log('Creating test order with data:', testOrderData);
 
     const order = await Order.create(testOrderData);
+
+    // No need to clear cart for a test order
+    // user.cart = []; await user.save(); // Don't do this for test order
 
     const populatedOrder = await Order.findById(order._id)
       .populate('user', 'name email')
@@ -448,7 +510,7 @@ export const testBankTransferOrder = asyncHandler(async (req, res) => {
       order: populatedOrder
     });
   } catch (error) {
-    console.error('Error creating test order:', error);
-    res.status(500).json({ message: 'Error creating test order: ' + error.message });
+      console.error('Error creating test order:', error);
+      res.status(500).json({ message: 'Error creating test order: ' + error.message });
   }
 });
